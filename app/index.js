@@ -1,11 +1,30 @@
-//import {} from 'react-native-reanimated/lib/typescript/Animated';
-
-/* import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView'; */
-
 import React, { useState } from 'react';
+
+import WelcomeScreen from './welcome';
+import LoginScreen from './login';
+import RegisterScreen from './register';
+import LandAddScreen from './landadd';
+import MyLandScreen from './myland';
+
+const App = () => {
+  const [screen, setScreen] = useState('WelcomeScreen');
+
+  if (screen === 'WelcomeScreen') {
+    return <WelcomeScreen setScreen={setScreen} />;
+  } else if (screen === 'LoginScreen') {
+    return <LoginScreen setScreen={setScreen} />;
+  } else if (screen === 'RegisterScreen') {
+    return <RegisterScreen setScreen={setScreen} />
+  } else if (screen === 'LandAddScreen') {
+    return <LandAddScreen setScreen={setScreen} />
+  } else if (screen === 'MyLandScreen') {
+    return <MyLandScreen setScreen={setScreen} />
+  }
+}
+
+export default App;
+
+/* import React, { useState } from 'react';
 import { Image, StyleSheet, TextInput, Dimensions, View, Text, Alert, TouchableOpacity, SafeAreaView } from 'react-native';
 import { SelectList } from 'react-native-dropdown-select-list';
 import axios from 'axios';
@@ -32,6 +51,7 @@ const WelcomeScreen = () => {
 const RegisterScreen = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [passwordAuth, setPasswordAuth] = useState('');
   
   const handleRegister = async () => {
     try {
@@ -78,7 +98,8 @@ const RegisterScreen = () => {
             style={styles.register_text_input}
             placeholder='Şifre Doğrulama'
             placeholderTextColor={'#FFF'}
-            //value={password}
+            value={passwordAuth}
+            onChangeText={setPasswordAuth}
             secureTextEntry
           />
           <TouchableOpacity style={styles.register_submit_button} onPress={handleRegister}>
@@ -91,14 +112,14 @@ const RegisterScreen = () => {
 }
 
 const LoginScreen = () => {
-  const [username, setUsername] = ('');
-  const [password, setPassword] = ('');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   
   const handleLogin = async () => {
     try {
       const response = await axios.post('http://192.168.125.44:8080/api/users/login', {
-        username: username,
-        password: password
+        username,
+        password
       });
       Alert.alert('Success', 'User logged in successfully');
     } catch (error) {
@@ -108,7 +129,39 @@ const LoginScreen = () => {
   }
 
   return(
-    <SafeAreaView></SafeAreaView>
+    <SafeAreaView>
+      <View style={styles.login_top_container}>
+        <Image
+          source={require('@/assets/images/welcome2.jpeg')}
+          style={styles.login_top_container_image}
+        />
+        <Text style={styles.login_top_container_title}>Toprak Rehberi</Text>
+        <Text style={styles.login_top_container_text}>Ekim yapılacak bölgeleri keşfedin ve bilinçli ürün seçimleri yapın.</Text>
+      </View>
+
+      <View style={styles.login_bottom_container}>
+        <View style={styles.login_bottom_textInput_container}>
+          <TextInput 
+            style={styles.login_text_input}
+            placeholder='Kullanıcı Adı'
+            placeholderTextColor={'#FFF'}
+            value={username}
+            onChangeText={setUsername}
+          />
+          <TextInput 
+            style={styles.login_text_input}
+            placeholder='Şifre'  
+            placeholderTextColor={'#FFF'}
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry
+          />
+          <TouchableOpacity style={styles.login_submit_button} onPress={handleLogin}>
+            <Text style={styles.login_submit_button_text}>Kaydol</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </SafeAreaView>
   );
 }
 
@@ -126,7 +179,7 @@ const LandAddScreen = () => {
   const handleAdding = async () => {
     try {
       const response = await axios.post('http://192.168.125.44:8080/api/users/addland', {
-        city: city,
+        city,
 
       });
     } catch (error) {
@@ -142,7 +195,7 @@ const LandAddScreen = () => {
         dropdownStyles={styles.landAdd_select_list_drop}
         dropdownItemStyles={styles.landAdd_select_list_items}
         dropdownTextStyles={styles.landAdd_select_list_item_text}
-        setSelected={(val: React.SetStateAction<string>) => setSelected(val)}
+        setSelected={(val) => setSelected(val)}
         data={data}
         save="value"
       />
@@ -305,6 +358,85 @@ const styles = StyleSheet.create({
     margin: 'auto'
   },
 
+  //-------------------
+
+  login_top_container: {
+    position: 'absolute',
+    width: WIDTH,
+    height: 350,
+    backgroundColor: '#FFF',
+    borderBottomLeftRadius: 20,
+    borderBottomRightRadius: 20,
+    zIndex: 2,
+  },
+
+  login_top_container_image: {
+    width: 130,
+    height: 130,
+    marginTop: 350/2-100,
+    marginLeft: WIDTH/2-65,
+    borderRadius: 20,
+  },
+
+  login_top_container_title: {
+    color: '#000',
+    fontWeight: 'bold',
+    fontSize: 20,
+    textAlign: 'center',
+    marginTop: 20,
+  },
+
+  login_top_container_text: {
+    color: '#000',
+    fontSize: 20,
+    textAlign: 'center',
+    marginLeft: 20,
+    marginRight: 20,
+    marginTop: 10,
+  },
+
+  login_bottom_container: {
+    position: 'absolute',
+    width: WIDTH,
+    height: HEIGHT,
+    backgroundColor: '#000',
+    zIndex: 1,
+  },
+
+  login_bottom_textInput_container: {
+    width: WIDTH,
+    height: HEIGHT-350,
+    marginTop: 400,
+  },
+
+  login_text_input: {
+    backgroundColor: 'grey',
+    color: '#FFF',
+    width: WIDTH-50,
+    height: 50,
+    fontSize: 20,
+    marginLeft: 25,
+    marginTop: 25,
+    borderRadius: 20,
+    padding: 10,
+  },
+
+  login_submit_button: {
+    width: WIDTH-50,
+    height: 50,
+    backgroundColor: '#FFF',
+    marginLeft: 25,
+    marginTop: 50,
+    borderRadius: 20,
+  },
+
+  login_submit_button_text: {
+    color: '#000',
+    fontWeight: 'bold',
+    fontSize: 20,
+    margin: 'auto'
+  },
+
   //--------------------
 
   landAdd_container: {
@@ -366,68 +498,5 @@ const styles = StyleSheet.create({
   },
 });
 
-export default myLandScreen;
-
-/* export default function HomeScreen() {
-  return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({ ios: 'cmd + d', android: 'cmd + m' })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          Tap the Explore tab to learn more about what's included in this starter app.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          When you're ready, run{' '}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
-  );
-}
-
-const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
-  },
-}); */
+export default LoginScreen;
+ */
