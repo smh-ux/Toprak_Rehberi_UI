@@ -6,7 +6,8 @@ import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView'; */
 
 import React, { useState } from 'react';
-import { Image, StyleSheet, TextInput, Dimensions, View, Text, Alert, TouchableOpacity, SafeAreaView, registerCallableModule } from 'react-native';
+import { Image, StyleSheet, TextInput, Dimensions, View, Text, Alert, TouchableOpacity, SafeAreaView } from 'react-native';
+import { SelectList } from 'react-native-dropdown-select-list';
 import axios from 'axios';
 
 const HEIGHT = Dimensions.get("screen").height;
@@ -34,13 +35,14 @@ const RegisterScreen = () => {
   
   const handleRegister = async () => {
     try {
-      const response = await axios.post('http://localhost:8080/api/users/register', {
+      const response = await axios.post('http://192.168.125.44:8080/api/users/register', {
         username,
         password
       });
       Alert.alert('Success', 'User registered successfully');
     } catch (error) {
       Alert.alert('Error', 'Failed to register user');
+      console.error(error);
     }
   }
 
@@ -61,14 +63,14 @@ const RegisterScreen = () => {
             style={styles.register_text_input}
             placeholder='Kullanıcı Adı'
             placeholderTextColor={'#FFF'}
-            value='username'
+            value={username}
             onChangeText={setUsername}
           />
           <TextInput 
             style={styles.register_text_input}
-            placeholder='Şifre'  
+            placeholder='password'  
             placeholderTextColor={'#FFF'}
-            value='password'
+            value={password}
             onChangeText={setPassword}
             secureTextEntry
           />
@@ -76,6 +78,8 @@ const RegisterScreen = () => {
             style={styles.register_text_input}
             placeholder='Şifre Doğrulama'
             placeholderTextColor={'#FFF'}
+            //value={password}
+            secureTextEntry
           />
           <TouchableOpacity style={styles.register_submit_button} onPress={handleRegister}>
             <Text style={styles.register_submit_button_text}>Kaydol</Text>
@@ -86,7 +90,88 @@ const RegisterScreen = () => {
   );
 }
 
-const OtherScreen = () => {
+const LoginScreen = () => {
+  const [username, setUsername] = ('');
+  const [password, setPassword] = ('');
+  
+  const handleLogin = async () => {
+    try {
+      const response = await axios.post('http://192.168.125.44:8080/api/users/login', {
+        username: username,
+        password: password
+      });
+      Alert.alert('Success', 'User logged in successfully');
+    } catch (error) {
+      Alert.alert('Error', 'Failed to login user');
+      console.error(error);
+    }
+  }
+
+  return(
+    <SafeAreaView></SafeAreaView>
+  );
+}
+
+const LandAddScreen = () => {
+  const [selected, setSelected] = React.useState('');
+  const [city, setcity] = ('');
+
+  const data = [
+    {key:'1', value:'Tarla', disabled:false},
+    {key:'2', value:'Bahçe', disabled:false},
+    {key:'3', value:'Bağ', disabled:false},
+    {key:'4', value:'Diğer', disabled:false},
+  ]
+
+  const handleAdding = async () => {
+    try {
+      const response = await axios.post('http://192.168.125.44:8080/api/users/addland', {
+        city: city,
+
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  return(
+    <SafeAreaView style={styles.landAdd_container}>
+      <SelectList 
+        boxStyles={styles.landAdd_select_list_box}
+        inputStyles={styles.landAdd_select_list_input}
+        dropdownStyles={styles.landAdd_select_list_drop}
+        dropdownItemStyles={styles.landAdd_select_list_items}
+        dropdownTextStyles={styles.landAdd_select_list_item_text}
+        setSelected={(val: React.SetStateAction<string>) => setSelected(val)}
+        data={data}
+        save="value"
+      />
+      <Text style={{backgroundColor: '#000', fontSize: 20, color: '#FFF', marginLeft: 20, marginBottom: -15, marginTop: 20, fontWeight: 'bold'}}>İl</Text>
+      <TextInput 
+        style={styles.landAdd_text_input}
+        placeholder='İl Giriniz'
+        placeholderTextColor={'#FFF'}
+      />
+      <Text style={{backgroundColor: '#000', fontSize: 20, color: '#FFF', marginLeft: 20, marginBottom: -15, marginTop: 20, fontWeight: 'bold'}}>İlçe</Text>
+      <TextInput 
+        style={styles.landAdd_text_input}
+        placeholder='İlçe Giriniz'
+        placeholderTextColor={'#FFF'}
+      />
+      <Text style={{backgroundColor: '#000', fontSize: 20, color: '#FFF', marginLeft: 20, marginBottom: -15, marginTop: 20, fontWeight: 'bold'}}>Mahalle</Text>
+      <TextInput 
+        style={styles.landAdd_text_input}
+        placeholder='Mahalle Giriniz'
+        placeholderTextColor={'#FFF'}
+      />
+      <TouchableOpacity style={styles.landAdd_submit_button}>
+        <Text style={styles.landAdd_submit_button_text}>Kaydet</Text>
+      </TouchableOpacity>
+    </SafeAreaView>
+  );
+}
+
+const myLandScreen = () => {
   return(
     <SafeAreaView></SafeAreaView>
   );
@@ -218,14 +303,70 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 20,
     margin: 'auto'
-  }
+  },
 
   //--------------------
 
+  landAdd_container: {
+    width: WIDTH,
+    height: HEIGHT,
+    flex: 1,
+    backgroundColor: '#000',
+  },
 
+  landAdd_select_list_box: {
+    backgroundColor: '#FFF',
+    width: WIDTH-40,
+    marginLeft: 20,
+    marginTop:100,
+  },
+
+  landAdd_select_list_input: {
+  },
+
+  landAdd_select_list_drop: {
+    backgroundColor: '#FFF',
+    width: WIDTH-40,
+    marginLeft: 20,
+    marginTop:20,
+  },
+
+  landAdd_select_list_items: {
+  },
+
+  landAdd_select_list_item_text: {
+    color: '#000',
+    fontWeight: 'bold'
+  },
+
+  landAdd_text_input: {
+    backgroundColor: 'grey',
+    width: WIDTH-40,
+    marginLeft: 20,
+    marginTop: 20,
+    borderRadius: 20,
+    padding: 10,
+    color: '#FFF'
+  },
+
+  landAdd_submit_button: {
+    backgroundColor: '#FFF',
+    width: WIDTH-40,
+    marginLeft: 20,
+    marginTop: 40,
+    borderRadius: 20,
+    padding: 10
+ },
+
+  landAdd_submit_button_text: {
+    color: '#000',
+    margin: 'auto',
+    fontWeight: 'bold',
+    fontSize: 20
+  },
 });
 
-export default RegisterScreen;
+export default myLandScreen;
 
 /* export default function HomeScreen() {
   return (
