@@ -18,7 +18,7 @@ const MyLandScreen = ({ setScreen }) => {
           <Text style={styles.myland_header_title}>Arazilerim</Text>
         </View>
         <View style={styles.mylands}>
-          <TouchableOpacity onPress={() => setScreen('myland')}>
+          <TouchableOpacity onPress={() => setScreen('MyLandInfoScreen')}>
             <View style={styles.mylands_content}>
               <Text style={styles.mylands_content_text}>Arazi 1</Text>
               <Text style={styles.mylands_content_text}>Ankara</Text>
@@ -26,7 +26,7 @@ const MyLandScreen = ({ setScreen }) => {
               <Text style={styles.mylands_content_text}>1000 m2</Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => setScreen('myland')}>
+          <TouchableOpacity onPress={() => setScreen('MyLandInfoScreen')}>
             <View style={styles.mylands_content}>
               <Text style={styles.mylands_content_text}>Arazi 2</Text>
               <Text style={styles.mylands_content_text}>Ankara</Text>
@@ -34,7 +34,7 @@ const MyLandScreen = ({ setScreen }) => {
               <Text style={styles.mylands_content_text}>1500 m2</Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => setScreen('myland')}>
+          <TouchableOpacity onPress={() => setScreen('MyLandInfoScreen')}>
             <View style={styles.mylands_content}>
               <Text style={styles.mylands_content_text}>Arazi 3</Text>
               <Text style={styles.mylands_content_text}>Ankara</Text>
@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFF',
     borderRadius: 20,
     marginLeft: 20,
-    zIndex: 2
+    zIndex: 5
   },
 
   mylands_content_text: {
