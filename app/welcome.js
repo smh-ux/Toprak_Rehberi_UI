@@ -41,6 +41,7 @@ const styles = StyleSheet.create({
       height: 200,
       marginLeft: WIDTH/2-100,
       marginTop: HEIGHT/2-200,
+      borderRadius: 35,
     },
   
     title_text: {

@@ -23,7 +23,7 @@ const RegisterScreen = ({ setScreen }) => {
     const handleRegister = async () => {
       if (password == passwordAuth) {
         try {
-          const response = await axios.post('http://192.168.125.44:8080/api/users/register', {
+          const response = await axios.post('http://192.168.125.44:8081/api/users/register', {
             username,
             password
           });
