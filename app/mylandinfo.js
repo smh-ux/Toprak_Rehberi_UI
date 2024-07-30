@@ -3,6 +3,7 @@ import {
     StyleSheet,
     View,
     SafeAreaView,
+    ScrollView,
     Dimensions,
     Image,
     Text,
@@ -21,50 +22,96 @@ const MyLandInfoScreen = ({ setScreen }) => {
     const area = 1000;
     
     return(
-        <SafeAreaView>
-            <View style={styles.mylandinfo_container}>
-                <View style={styles.mylandinfo_header}>
-                    <Text style={styles.mylandinfo_header_title}>Arazi Bilgi Ekranı</Text>
-                </View>
-                <View style={styles.mylandinfo_main_info_container}>
-                    <Image 
+        
+        <View style={styles.mylandinfo_container}>
+            <View style={styles.mylandinfo_header}>
+                <Text style={styles.mylandinfo_header_title}>Arazi Bilgi Ekranı</Text>
+            </View>
+            <View style={styles.mylandinfo_main_info_container}>
+                <Image 
                     source={require('@/assets/images/welcome2.jpeg')}//Bunu açılış sayfası yap animasyonlu bir şekilde.
                     style={styles.mylandinfo_image}
-                    />
-                    <Text style={styles.mylandinfo_name}>Arazim</Text>
-                </View>        
-                <View style={styles.mylandinfo_second_info_container}>
-                    <Text style={styles.mylandinfo_second_text}>Arazi Tipi:  {land}</Text>
-                    <Text style={styles.mylandinfo_second_text}>İl:  {city}</Text>
-                    <Text style={styles.mylandinfo_second_text}>İlçe:  {town}</Text>
-                    <Text style={styles.mylandinfo_second_text}>Mahalle:  {neighborhood}</Text>
-                    <Text style={styles.mylandinfo_second_text}>Alan:  {area} m2</Text>
-                </View>
-                <DataTable style={styles.mylandinfo_table}>
-                    <DataTable.Header style={styles.mylandinfo_table_header}>
-                        <DataTable.Title style={styles.mylandinfo_table_header_title}>Mahsul Adı</DataTable.Title>
-                        <DataTable.Title style={styles.mylandinfo_table_header_title}>Ekilen m2</DataTable.Title>
-                    </DataTable.Header>
-                    <DataTable.Row style={styles.mylandinfo_table_row}>
-                        <DataTable.Cell style={styles.mylandinfo_table_row_cell}>Domates</DataTable.Cell>
-                        <DataTable.Cell style={styles.mylandinfo_table_row_cell}>500</DataTable.Cell>
-                    </DataTable.Row>
-                    <DataTable.Row style={styles.mylandinfo_table_row}>
-                        <DataTable.Cell style={styles.mylandinfo_table_row_cell}>Taze Patates</DataTable.Cell>
-                        <DataTable.Cell style={styles.mylandinfo_table_row_cell}>200</DataTable.Cell>
-                    </DataTable.Row>
-                    <DataTable.Row style={styles.mylandinfo_table_row}>
-                        <DataTable.Cell style={styles.mylandinfo_table_row_cell}>Biber</DataTable.Cell>
-                        <DataTable.Cell style={styles.mylandinfo_table_row_cell}>300</DataTable.Cell>
-                    </DataTable.Row>
-                </DataTable>
-                <TouchableOpacity style={styles.mylandinfo_add_button_opacity} onPress={() => setScreen('AddProductScreen')}>
-                    <View style={styles.mylandinfo_add_button}>
-                        <Text style={styles.mylandinfo_add_button_text}>Ürün Ekle</Text>
-                    </View>
-                </TouchableOpacity>
+                />
+                <Text style={styles.mylandinfo_name}>Arazim</Text>
+            </View>        
+            <View style={styles.mylandinfo_second_info_container}>
+                <Text style={styles.mylandinfo_second_text}>Arazi Tipi:  {land}</Text>
+                <Text style={styles.mylandinfo_second_text}>İl:  {city}</Text>
+                <Text style={styles.mylandinfo_second_text}>İlçe:  {town}</Text>
+                <Text style={styles.mylandinfo_second_text}>Mahalle:  {neighborhood}</Text>
+                <Text style={styles.mylandinfo_second_text}>Alan:  {area} m2</Text>
             </View>
-        </SafeAreaView>
+            <DataTable style={styles.mylandinfo_table}>
+                <DataTable.Header style={styles.mylandinfo_table_header}>
+                    <DataTable.Title style={styles.mylandinfo_table_header_title}>Mahsul Adı</DataTable.Title>
+                    <DataTable.Title style={styles.mylandinfo_table_header_title}>Ekilen m2</DataTable.Title>
+                </DataTable.Header>
+                <ScrollView vertical>
+                <Table 
+                    product_name={'Domates'}
+                    product_planting_area={500}
+                />
+                <Table 
+                    product_name={'Taze Patates'}
+                    product_planting_area={200}
+                />
+                <Table 
+                    product_name={'Biber'}
+                    product_planting_area={300}
+                />
+                <Table 
+                    product_name={'Domates'}
+                    product_planting_area={500}
+                />
+                <Table 
+                    product_name={'Taze Patates'}
+                    product_planting_area={200}
+                />
+                <Table 
+                    product_name={'Biber'}
+                    product_planting_area={300}
+                />
+                <Table 
+                    product_name={'Domates'}
+                    product_planting_area={500}
+                />
+                <Table 
+                    product_name={'Taze Patates'}
+                    product_planting_area={200}
+                />
+                <Table 
+                    product_name={'Biber'}
+                    product_planting_area={300}
+                />
+                <Table 
+                    product_name={'Domates'}
+                    product_planting_area={500}
+                />
+                <Table 
+                    product_name={'Taze Patates'}
+                    product_planting_area={200}
+                />
+                <Table 
+                    product_name={'Biber'}
+                    product_planting_area={300}
+                />
+                </ScrollView>
+            </DataTable>
+            <TouchableOpacity style={styles.mylandinfo_add_button_opacity} onPress={() => setScreen('AddProductScreen')}>
+                <View style={styles.mylandinfo_add_button}>
+                    <Text style={styles.mylandinfo_add_button_text}>Ürün Ekle</Text>
+                </View>
+            </TouchableOpacity>
+        </View>
+    );
+}
+
+const Table = ({ product_name, product_planting_area }) => {
+    return(
+        <DataTable.Row style={styles.mylandinfo_table_row}>
+            <DataTable.Cell textStyle={{fontSize: 13}}>{product_name}</DataTable.Cell>
+            <DataTable.Cell textStyle={{fontSize: 13}}>{product_planting_area}</DataTable.Cell>
+        </DataTable.Row>
     );
 }
 
@@ -129,6 +176,8 @@ const styles = StyleSheet.create({
 
     mylandinfo_table: {
         padding: 15,
+        width: WIDTH,
+        height: 300,
     },
 
     mylandinfo_table_header: {

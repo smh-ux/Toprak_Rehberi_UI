@@ -6,7 +6,7 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
-  Dimensions
+  Dimensions,
 } from 'react-native';
 import { SelectList } from 'react-native-dropdown-select-list';
 import axios from 'axios';
@@ -20,14 +20,14 @@ const LandAddScreen = ({ setScreen }) => {
   
     const data = [
       {key:'1', value:'Tarla', disabled:false},
-      {key:'2', value:'Bahçe', disabled:false},
-      {key:'3', value:'Bağ', disabled:false},
+      {key:'2', value:'Bağ', disabled:false},
+      {key:'3', value:'Bahçe', disabled:false},
       {key:'4', value:'Diğer', disabled:false},
     ]
   
     const handleAdding = async () => {
       try {
-        const response = await axios.post('http://192.168.125.44:8080/api/users/addland', {
+        const response = await axios.post('http://192.168.125.44:8080/api/lands/adding', {
           city,
   
         });
@@ -66,7 +66,14 @@ const LandAddScreen = ({ setScreen }) => {
           placeholder='Mahalle Giriniz'
           placeholderTextColor={'#FFF'}
         />
-        <TouchableOpacity style={styles.landAdd_submit_button}>
+        <Text style={{backgroundColor: '#000', fontSize: 20, color: '#FFF', marginLeft: 20, marginBottom: -15, marginTop: 20, fontWeight: 'bold'}}>Alan</Text>
+        <TextInput 
+        keyboardType='numeric'
+          style={styles.landAdd_text_input}
+          placeholder='Mahalle Giriniz'
+          placeholderTextColor={'#FFF'}
+        />
+        <TouchableOpacity style={styles.landAdd_submit_button} onPress={handleAdding}>
           <Text style={styles.landAdd_submit_button_text}>Kaydet</Text>
         </TouchableOpacity>
       </SafeAreaView>

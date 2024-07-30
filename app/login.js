@@ -21,7 +21,7 @@ const LoginScreen = ({ setScreen }) => {
     
     const handleLogin = async () => {
       try {
-        const response = await axios.post('http://192.168.125.44:8081/api/users/login', {
+        const response = await axios.post('http://192.168.125.44:8080/api/users/login', {
           username,
           password
         });
