@@ -6,9 +6,9 @@ import RegisterScreen from './register';
 import LandAddScreen from './landadd';
 import MyLandScreen from './myland';
 import MyLandInfoScreen from './mylandinfo';
-import AddProductScreen from './addproduct';
 import SuccessRateScreen from './successrate';
 import FeedBackScreen from './feedback';
+import ProductAddScreen from './productadd';
 
 const App = () => {
   const [screen, setScreen] = useState('MyLandScreen');
@@ -25,8 +25,8 @@ const App = () => {
     return <MyLandScreen setScreen={setScreen} />
   } else if (screen === 'MyLandInfoScreen') {
     return <MyLandInfoScreen setScreen={setScreen} />
-  } else if (screen === 'AddProductScreen') {
-    return <AddProductScreen setScreen={setScreen} />
+  } else if (screen === 'ProductAddScreen') {
+    return <ProductAddScreen setScreen={setScreen} />
   } else if (screen === 'SuccessRateScreen') {
     return <SuccessRateScreen setScreen={setScreen} />
   } else if (screen === 'FeedBackScreen') {

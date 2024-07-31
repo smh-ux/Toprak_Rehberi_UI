@@ -51,7 +51,7 @@ const LoginScreen = ({ setScreen }) => {
             <TextInput 
               style={styles.login_text_input}
               placeholder='Kullanıcı Adı'
-              placeholderTextColor={'#FFF'}
+              placeholderTextColor={'#FFF'} 
               value={username}
               onChangeText={setUsername}
             />

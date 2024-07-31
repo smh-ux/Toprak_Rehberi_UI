@@ -2,107 +2,131 @@ import React, { useState } from 'react';
 import {
     StyleSheet,
     View,
-    SafeAreaView,
     ScrollView,
     Dimensions,
     Image,
     Text,
     TouchableOpacity,
+    SafeAreaView
 } from 'react-native';
 import { DataTable } from 'react-native-paper';
+import Header from './header';
+
 
 const WIDTH = Dimensions.get('screen').width;
 const HEIGHT = Dimensions.get('screen').height;
 
-const MyLandInfoScreen = ({ setScreen }) => {
-    const land = 'Tarla';
-    const city = 'Ankara';
-    const town = 'Polatlı';
-    const neighborhood = 'Özyurt';
-    const area = 1000;
+const MyLandInfoScreen = ({setScreen, name, city, town, neighborhood, area}) => {
+    const land = name;
+    const city_new = city;
+    const town_new = town;
+    const neighborhood_new = neighborhood;
+    const area_new = area;
     
+    const back = "<";
+
     return(
-        
-        <View style={styles.mylandinfo_container}>
-            <View style={styles.mylandinfo_header}>
-                <Text style={styles.mylandinfo_header_title}>Arazi Bilgi Ekranı</Text>
-            </View>
-            <View style={styles.mylandinfo_main_info_container}>
-                <Image 
-                    source={require('@/assets/images/welcome2.jpeg')}//Bunu açılış sayfası yap animasyonlu bir şekilde.
-                    style={styles.mylandinfo_image}
-                />
-                <Text style={styles.mylandinfo_name}>Arazim</Text>
-            </View>        
-            <View style={styles.mylandinfo_second_info_container}>
-                <Text style={styles.mylandinfo_second_text}>Arazi Tipi:  {land}</Text>
-                <Text style={styles.mylandinfo_second_text}>İl:  {city}</Text>
-                <Text style={styles.mylandinfo_second_text}>İlçe:  {town}</Text>
-                <Text style={styles.mylandinfo_second_text}>Mahalle:  {neighborhood}</Text>
-                <Text style={styles.mylandinfo_second_text}>Alan:  {area} m2</Text>
-            </View>
-            <DataTable style={styles.mylandinfo_table}>
-                <DataTable.Header style={styles.mylandinfo_table_header}>
-                    <DataTable.Title style={styles.mylandinfo_table_header_title}>Mahsul Adı</DataTable.Title>
-                    <DataTable.Title style={styles.mylandinfo_table_header_title}>Ekilen m2</DataTable.Title>
-                </DataTable.Header>
-                <ScrollView vertical>
-                <Table 
-                    product_name={'Domates'}
-                    product_planting_area={500}
-                />
-                <Table 
-                    product_name={'Taze Patates'}
-                    product_planting_area={200}
-                />
-                <Table 
-                    product_name={'Biber'}
-                    product_planting_area={300}
-                />
-                <Table 
-                    product_name={'Domates'}
-                    product_planting_area={500}
-                />
-                <Table 
-                    product_name={'Taze Patates'}
-                    product_planting_area={200}
-                />
-                <Table 
-                    product_name={'Biber'}
-                    product_planting_area={300}
-                />
-                <Table 
-                    product_name={'Domates'}
-                    product_planting_area={500}
-                />
-                <Table 
-                    product_name={'Taze Patates'}
-                    product_planting_area={200}
-                />
-                <Table 
-                    product_name={'Biber'}
-                    product_planting_area={300}
-                />
-                <Table 
-                    product_name={'Domates'}
-                    product_planting_area={500}
-                />
-                <Table 
-                    product_name={'Taze Patates'}
-                    product_planting_area={200}
-                />
-                <Table 
-                    product_name={'Biber'}
-                    product_planting_area={300}
-                />
-                </ScrollView>
-            </DataTable>
-            <TouchableOpacity style={styles.mylandinfo_add_button_opacity} onPress={() => setScreen('AddProductScreen')}>
+        <SafeAreaView>
+            <TouchableOpacity style={styles.mylandinfo_add_button_opacity} onPress={() => setScreen('ProductAddScreen')}>
                 <View style={styles.mylandinfo_add_button}>
                     <Text style={styles.mylandinfo_add_button_text}>Ürün Ekle</Text>
                 </View>
             </TouchableOpacity>
-        </View>
+            <ScrollView style={{zIndex:2, marginTop:80}} showsVerticalScrollIndicator={false}>
+                <View style={{width:WIDTH, height:HEIGHT-240}}></View>
+                <DataTable style={styles.mylandinfo_table}>
+                    <DataTable.Header style={styles.mylandinfo_table_header}>
+                        <DataTable.Title>Mahsul Adı</DataTable.Title>
+                        <DataTable.Title>Ekilen m2</DataTable.Title>
+                    </DataTable.Header>
+                    <Table 
+                        product_name={'Domates'}
+                        product_planting_area={500}
+                    />
+                    <Table 
+                        product_name={'Taze Patates'}
+                        product_planting_area={200}
+                    />
+                    <Table 
+                        product_name={'Biber'}
+                        product_planting_area={300}
+                    />
+                    <Table 
+                        product_name={'Domates'}
+                        product_planting_area={500}
+                    />
+                    <Table 
+                        product_name={'Taze Patates'}
+                        product_planting_area={200}
+                    />
+                    <Table 
+                        product_name={'Biber'}
+                        product_planting_area={300}
+                    />
+                    <Table 
+                        product_name={'Domates'}
+                        product_planting_area={500}
+                    />
+                    <Table 
+                        product_name={'Taze Patates'}
+                        product_planting_area={200}
+                    />
+                    <Table 
+                        product_name={'Biber'}
+                        product_planting_area={300}
+                    />
+                    <Table 
+                        product_name={'Domates'}
+                        product_planting_area={500}
+                    />
+                    <Table 
+                        product_name={'Taze Patates'}
+                        product_planting_area={200}
+                    />
+                    <Table 
+                        product_name={'Biber'}
+                        product_planting_area={300}
+                    />
+                    <Table 
+                        product_name={'Domates'}
+                        product_planting_area={500}
+                    />
+                    <Table 
+                        product_name={'Taze Patates'}
+                        product_planting_area={200}
+                    />
+                    <Table 
+                        product_name={'Biber'}
+                        product_planting_area={300}
+                    />
+                    <Table 
+                        product_name={'Domates'}
+                        product_planting_area={500}
+                    />
+                </DataTable>
+            </ScrollView>
+            <View style={styles.mylandinfo_container}>
+                <Header 
+                    text={'Arazi Bilgi Ekranı'}
+                    method={() => setScreen('MyLandScreen')}
+                />
+                <View style={styles.mylandinfo_main_info_container}>
+                    <Image 
+                        source={require('@/assets/images/welcome2.jpeg')}//Bunu açılış sayfası yap animasyonlu bir şekilde.
+                        style={styles.mylandinfo_image}
+                    />
+                    <Text style={styles.mylandinfo_name}>Arazim</Text>
+                </View>        
+                <View style={styles.mylandinfo_second_info_container}>
+                    <Text style={styles.mylandinfo_second_text}>Arazi Tipi:  {land}</Text>
+                    <Text style={styles.mylandinfo_second_text}>İl:  {city_new}</Text>
+                    <Text style={styles.mylandinfo_second_text}>İlçe:  {town_new}</Text>
+                    <Text style={styles.mylandinfo_second_text}>Mahalle:  {neighborhood}</Text>
+                    <Text style={styles.mylandinfo_second_text}>Alan:  {area_new} m2</Text>
+                </View>
+                
+            </View>
+        </SafeAreaView>
     );
 }
 
@@ -117,6 +141,7 @@ const Table = ({ product_name, product_planting_area }) => {
 
 const styles = StyleSheet.create({
     mylandinfo_container: {
+        position: 'absolute',
         width: WIDTH,
         height: HEIGHT,
         backgroundColor: '#000',
@@ -124,9 +149,23 @@ const styles = StyleSheet.create({
 
     mylandinfo_header: {
         width: WIDTH,
-        height: 100,
+        height: 80,
         borderBottomColor: '#FFF',
         borderBottomWidth: 1,
+        flexDirection: 'row'
+    },
+
+    mylandinfo_header_container_back: {
+        width: 20,
+        marginLeft: 20,
+        marginTop: 15,
+        marginRight: -20,
+    },
+
+    mylandinfo_header_back: {
+        color: '#FFF',
+        fontWeight: 'bold',
+        fontSize: 35,
     },
 
     mylandinfo_header_title: {
@@ -138,7 +177,7 @@ const styles = StyleSheet.create({
 
     mylandinfo_main_info_container: {
         width: WIDTH,
-        height: 300,
+        height: 290,
         backgroundColor: '#000',
         borderBottomColor: '#FFF',
         borderBottomWidth: 0.2
@@ -163,8 +202,7 @@ const styles = StyleSheet.create({
         width: WIDTH,
         height: 200,
         backgroundColor: '#000',
-        borderBottomColor: '#FFF',
-        borderBottomWidth: 1
+        marginTop: 20
     },
     
     mylandinfo_second_text: {
@@ -175,26 +213,29 @@ const styles = StyleSheet.create({
     },
 
     mylandinfo_table: {
-        padding: 15,
         width: WIDTH,
-        height: 300,
+        height: 'auto',
     },
 
     mylandinfo_table_header: {
         backgroundColor: '#FFF',
+        borderTopLeftRadius: 30,
+        borderTopRightRadius: 30,
     },  
 
     mylandinfo_table_row: {
         backgroundColor: '#FFF',
+        height: HEIGHT/16
     },
 
     mylandinfo_add_button_opacity: {
-        position: 'absolute'
+        position: 'absolute',
+        zIndex:7
     },
 
     mylandinfo_add_button: {
         position: 'absolute',
-        top: 680,
+        top: 660,
         left: 260,
         width: 104,
         height: 104,

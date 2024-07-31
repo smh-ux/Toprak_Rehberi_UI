@@ -12,7 +12,7 @@ import axios from 'axios';
 const WIDTH = Dimensions.get('screen').width;
 const HEIGHT = Dimensions.get('screen').height;
 
-const info = ({name, city, town, area, setScreen}) => (
+const info = ({name, city, town, area}) => (
   <View style={styles.mylands_content}>
     <View style={styles.mylands_content_container}>
       <Text style={styles.mylands_content_title}>Arazi Tipi:</Text>
@@ -36,9 +36,9 @@ const info = ({name, city, town, area, setScreen}) => (
 const MyLandScreen = ({ setScreen }) => {
   
   const info_data = [
-    {name: 'Tarla', city: 'Ankara', town: 'Polatlı', area: '1000'},
-    {name: 'Bağ', city: 'Ankara', town: 'Gölyaka', area: '1500'},
-    {name: 'Bahçe', city: 'Ankara', town: 'Sincan', area: '1000'}
+    {name: 'Tarla', city: 'Ankara', neighborhood: 'merkez', town: 'Polatlı', area: '1000'},
+    {name: 'Bağ', city: 'Ankara', neighborhood: 'köy', town: 'Gölyaka', area: '1500'},
+    {name: 'Bahçe', city: 'Ankara', neighborhood: 'mahalle', town: 'Sincan', area: '1000'}
   ];
 
   return(
@@ -63,21 +63,6 @@ const MyLandScreen = ({ setScreen }) => {
       </View>
     </SafeAreaView>
   );
-  // const [land, setLand] = useState([]);
-
-  // useEffect(() => {
-  //   const fetchLands = async () => {
-  //     try {
-  //       const response = await axios.get('http://192.168.125.44:8081/api/lands');
-  //       setLands(response.data);
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  //   };
-
-  //   fetchLands();
-
-  // }, []); 
 }
 
 const styles = StyleSheet.create({  
@@ -91,12 +76,12 @@ const styles = StyleSheet.create({
     width: WIDTH,
     height: 80,
     borderBottomColor: '#FFF',
-    borderWidth: 1,
+    borderWidth: 0.5,
   },
 
   myland_header_title: {
     color: '#FFF',
-    fontSize: 40,
+    fontSize: 30,
     fontWeight: 'bold',
     margin: 'auto'
   },
@@ -104,7 +89,7 @@ const styles = StyleSheet.create({
   mylands: {
     width: WIDTH,
     height: 100,
-    marginTop: 25,
+    marginTop: 35,
     zIndex: 1,
   },
 
