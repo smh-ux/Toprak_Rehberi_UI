@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
     SafeAreaView,
     Text,
@@ -7,16 +7,17 @@ import {
     StyleSheet,
     Dimensions,
     View,
+    Alert,
 } from 'react-native';
 import { SelectList } from 'react-native-dropdown-select-list';
-import Header from './header';
-import { setStatusBarTranslucent } from 'expo-status-bar';
+import axios from 'axios';
 
 const WIDTH = Dimensions.get('screen').width;
 const HEIGHT = Dimensions.get('screen').height;
 
-const ProductAddScreen = ({ setScreen }) => {
+const ProductAddScreen = ({ navigation }) => {
     const [selected, setSelected] = React.useState('');
+    const [plantedArea, setPlantedArea] = useState('');
 
     const back = '<';
 
@@ -28,14 +29,24 @@ const ProductAddScreen = ({ setScreen }) => {
         {key:'5', value:'Bamya', disabled:false},
         {key:'6', value:'Arpa', disabled:false},
         {key:'7', value:'Buğday', disabled:false},
-      ]
+    ]
+
+    const handleAdding = async () => {
+        try {
+          const response = await axios.post('http://192.168.125.44:8080/api/products/adding', {
+            name: selected,
+            plantedArea: parseInt(plantedArea, 10),
+          });
+          Alert.alert('Başarılı', 'Kayıt Başarılı');
+          navigation.navigate('MyLandInfo');
+        } catch (error) {
+          Alert.alert('Hata', 'Giriş Hatalı');
+          console.error(error);
+        }
+    }
 
     return(
         <View style={styles.productAdd_container}>
-            <Header 
-                text={'Ürün Ekle'}
-                method={() => setScreen('MyLandInfoScreen')}
-            />
             <Text style={{backgroundColor: '#000', fontSize: 20, color: '#FFF', marginLeft: 20, marginBottom: -15, marginTop: 40, fontWeight: 'bold'}}>Ürün</Text>
             <SelectList 
                 boxStyles={styles.productAdd_containerAdd_select_list_box}
@@ -52,9 +63,11 @@ const ProductAddScreen = ({ setScreen }) => {
                 style={styles.productAdd_text_input}
                 placeholder='Ekeceğiniz Alanı Giriniz'
                 placeholderTextColor={'#000'}
+                value={plantedArea}
+                onChangeText={setPlantedArea}
                 keyboardType='numeric'
             />
-            <TouchableOpacity style={styles.productAdd_submit_button}>
+            <TouchableOpacity style={styles.productAdd_submit_button} onPress={handleAdding}>
                 <Text style={styles.productAdd_submit_button_text}>Kaydet</Text>
             </TouchableOpacity>
         </View>
@@ -66,31 +79,6 @@ const styles = StyleSheet.create({
         width: WIDTH,
         height: HEIGHT,
         backgroundColor: '#000'
-    },
-
-    productAdd_container_title: {
-        width: WIDTH,
-        borderBottomWidth: 1,
-        borderColor: '#FFF',
-        height: 80,
-        flexDirection: 'row',
-    },
-
-    productAdd_back_container: {
-
-    },
-
-    productAdd_back: {
-        color: '#FFF',
-        fontSize: 30,
-        fontWeight: 'bold',
-    },
-
-    productAdd_container_title_text: {
-        color: '#FFF',
-        fontWeight: 'bold',
-        fontSize: 30,
-        margin: 'auto'
     },
 
     productAdd_containerAdd_select_list_box: {

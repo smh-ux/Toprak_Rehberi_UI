@@ -12,19 +12,19 @@ import {
 const WIDTH = Dimensions.get('screen').width;
 const HEIGHT = Dimensions.get('screen').height;
 
-const WelcomePage = ({ setScreen }) => {
+const WelcomeScreen = ({ navigation }) => {
     return(
-        <View style={styles.welcome_container}>
-            <Image 
-                source={require('@/assets/images/welcome3.png')}
-                style={styles.welcome_img}
-            />
-            <Text style={styles.title_text}>Toprak Rehberi</Text>
-            <Text style={styles.welcome_text}>Ekim yapılacak bölgeleri keşfetmeye ve bilinçli ürün yetiştirmeye hazır mısın.</Text>
-            <TouchableOpacity style={styles.welcome_button} onPress={() => setScreen('LoginScreen')}>
-                <Text style={styles.welcome_button_text}>Keşfetmeye Başla</Text>
-            </TouchableOpacity>
-        </View>
+      <View style={styles.welcome_container}>
+        <Image 
+          source={require('./assets/welcome3.png')}
+          style={styles.welcome_img}
+        />
+        <Text style={styles.title_text}>Toprak Rehberi</Text>
+        <Text style={styles.welcome_text}>Ekim yapılacak bölgeleri keşfetmeye ve bilinçli ürün yetiştirmeye hazır mısın.</Text>
+        <TouchableOpacity style={styles.welcome_button} onPress={() => navigation.navigate('Login')}>
+          <Text style={styles.welcome_button_text}>Keşfetmeye Başla</Text>
+        </TouchableOpacity>
+      </View>
     );
 }
 
@@ -79,4 +79,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default WelcomePage;
+export default WelcomeScreen;
