@@ -55,9 +55,9 @@ const LandAddScreen = ({ navigation, route }) => {
   const handleAdding = async () => {
     try {
       const token = await AsyncStorage.getItem('userToken');
-    const userId = await AsyncStorage.getItem('userId');
+      const userId = await AsyncStorage.getItem('userId');
       const response = await axios.post(
-        'http://192.168.125.44:8080/api/lands/adding',
+        'http://192.168.125.44:8080/api/lands/adding',  
         {
           landName: type,
           city: city,
@@ -182,7 +182,7 @@ const LandAddScreen = ({ navigation, route }) => {
       </Text>
       <TextInput
         style={styles.landAdd_text_input}
-        placeholder="Ekeceğiniz Alanı Giriniz"
+        placeholder="Arazinizin Alanını Giriniz"
         placeholderTextColor={'#000'}
         value={area}
         onChangeText={setArea}

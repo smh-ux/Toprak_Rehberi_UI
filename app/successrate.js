@@ -14,13 +14,19 @@ const WIDTH = Dimensions.get('screen').width;
 const HEIGHT = Dimensions.get('screen').height;
 
 const name = 'Semih Okumuş';
-const address = 'Ankara Yıldız mahallesi 13.sokak no:27 Gölbaşı/Haymana';
-const land_info_title = 'Arazi Bilgisi:';
-const land_info = 'Ada no:979, Parsel no:14, Alan:500m2';
+const address = 'Ankara Demetevler mahallesi Çankaya/Ankara';
 
 const land_no = 2;
 
-const SuccessRateScreen = ({ navigation }) => {
+const SuccessRateScreen = ({ route, navigation }) => {
+  const { item } = route.params;
+
+  if(!item) {
+    console.log('item yok')
+  } else {
+    console.log(item);
+  }
+  
   return (
     <SafeAreaView>
       <View style={styles.successrate_container}>
@@ -28,8 +34,6 @@ const SuccessRateScreen = ({ navigation }) => {
           <View style={styles.view1}>
             <Text style={styles.view1_text1}>Sn.{name}</Text>
             <Text style={styles.view1_text2}>{address}</Text>
-            <Text style={styles.view1_text3}>{land_info_title}</Text>
-            <Text style={styles.view1_text4}>{land_info}</Text>
           </View>
           <View style={styles.view2}>
             <Text style={styles.view2_text1}>Arazi no: {land_no}</Text>
@@ -69,173 +73,15 @@ const SuccessRateScreen = ({ navigation }) => {
               success_rate={71}
               product_planting_time={'Şubat/Mart'}
             />
-            <Table
-              product_name={'Arpa'}
-              product_harvest_time={'İlkbahar/Yaz'}
-              success_rate={44}
-              product_planting_time={'Kasım/Aralık'}
-            />
-            <Table
-              product_name={'Domates'}
-              product_harvest_time={'Yaz/Sonbahar'}
-              success_rate={82}
-              product_planting_time={'Mayıs/Haziran'}
-            />
-            <Table
-              product_name={'Taze Fasulye'}
-              product_harvest_time={'Yaz'}
-              success_rate={71}
-              product_planting_time={'Şubat/Mart'}
-            />
-            <Table
-              product_name={'Arpa'}
-              product_harvest_time={'İlkbahar/Yaz'}
-              success_rate={44}
-              product_planting_time={'Kasım/Aralık'}
-            />
-            <Table
-              product_name={'Domates'}
-              product_harvest_time={'Yaz/Sonbahar'}
-              success_rate={82}
-              product_planting_time={'Mayıs/Haziran'}
-            />
-            <Table
-              product_name={'Taze Fasulye'}
-              product_harvest_time={'Yaz'}
-              success_rate={71}
-              product_planting_time={'Şubat/Mart'}
-            />
-            <Table
-              product_name={'Arpa'}
-              product_harvest_time={'İlkbahar/Yaz'}
-              success_rate={44}
-              product_planting_time={'Kasım/Aralık'}
-            />
-            <Table
-              product_name={'Domates'}
-              product_harvest_time={'Yaz/Sonbahar'}
-              success_rate={82}
-              product_planting_time={'Mayıs/Haziran'}
-            />
-            <Table
-              product_name={'Taze Fasulye'}
-              product_harvest_time={'Yaz'}
-              success_rate={71}
-              product_planting_time={'Şubat/Mart'}
-            />
-            <Table
-              product_name={'Arpa'}
-              product_harvest_time={'İlkbahar/Yaz'}
-              success_rate={44}
-              product_planting_time={'Kasım/Aralık'}
-            />
-            <Table
-              product_name={'Domates'}
-              product_harvest_time={'Yaz/Sonbahar'}
-              success_rate={82}
-              product_planting_time={'Mayıs/Haziran'}
-            />
-            <Table
-              product_name={'Taze Fasulye'}
-              product_harvest_time={'Yaz'}
-              success_rate={71}
-              product_planting_time={'Şubat/Mart'}
-            />
-            <Table
-              product_name={'Arpa'}
-              product_harvest_time={'İlkbahar/Yaz'}
-              success_rate={44}
-              product_planting_time={'Kasım/Aralık'}
-            />
-            <Table
-              product_name={'Domates'}
-              product_harvest_time={'Yaz/Sonbahar'}
-              success_rate={82}
-              product_planting_time={'Mayıs/Haziran'}
-            />
-            <Table
-              product_name={'Taze Fasulye'}
-              product_harvest_time={'Yaz'}
-              success_rate={71}
-              product_planting_time={'Şubat/Mart'}
-            />
-            <Table
-              product_name={'Arpa'}
-              product_harvest_time={'İlkbahar/Yaz'}
-              success_rate={44}
-              product_planting_time={'Kasım/Aralık'}
-            />
-            <Table
-              product_name={'Domates'}
-              product_harvest_time={'Yaz/Sonbahar'}
-              success_rate={82}
-              product_planting_time={'Mayıs/Haziran'}
-            />
-            <Table
-              product_name={'Taze Fasulye'}
-              product_harvest_time={'Yaz'}
-              success_rate={71}
-              product_planting_time={'Şubat/Mart'}
-            />
-            <Table
-              product_name={'Arpa'}
-              product_harvest_time={'İlkbahar/Yaz'}
-              success_rate={44}
-              product_planting_time={'Kasım/Aralık'}
-            />
-            <Table
-              product_name={'Domates'}
-              product_harvest_time={'Yaz/Sonbahar'}
-              success_rate={82}
-              product_planting_time={'Mayıs/Haziran'}
-            />
-            <Table
-              product_name={'Taze Fasulye'}
-              product_harvest_time={'Yaz'}
-              success_rate={71}
-              product_planting_time={'Şubat/Mart'}
-            />
-            <Table
-              product_name={'Arpa'}
-              product_harvest_time={'İlkbahar/Yaz'}
-              success_rate={44}
-              product_planting_time={'Kasım/Aralık'}
-            />
-            <Table
-              product_name={'Domates'}
-              product_harvest_time={'Yaz/Sonbahar'}
-              success_rate={82}
-              product_planting_time={'Mayıs/Haziran'}
-            />
-            <Table
-              product_name={'Taze Fasulye'}
-              product_harvest_time={'Yaz'}
-              success_rate={71}
-              product_planting_time={'Şubat/Mart'}
-            />
-            <Table
-              product_name={'Arpa'}
-              product_harvest_time={'İlkbahar/Yaz'}
-              success_rate={44}
-              product_planting_time={'Kasım/Aralık'}
-            />
-            <Table
-              product_name={'Domates'}
-              product_harvest_time={'Yaz/Sonbahar'}
-              success_rate={82}
-              product_planting_time={'Mayıs/Haziran'}
-            />
-            <Table
-              product_name={'Taze Fasulye'}
-              product_harvest_time={'Yaz'}
-              success_rate={71}
-              product_planting_time={'Şubat/Mart'}
-            />
           </ScrollView>
         </DataTable>
         <TouchableOpacity
           style={styles.submit_button}
-          onPress={() => navigation.navigate('ProductAdd')}>
+          onPress={() =>
+            navigation.navigate('ProductAdd', {
+              item,
+            })
+          }>
           <Text style={styles.submit_button_text}>Ürün Eklemeye Hazırım</Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -255,7 +101,7 @@ const Table = ({
   product_planting_time,
 }) => {
   return (
-    <DataTable.Row style={styles.successrate_table_row}>
+    <DataTable.Row>
       <DataTable.Cell textStyle={{ fontSize: 13 }}>
         {product_name}
       </DataTable.Cell>
@@ -303,22 +149,9 @@ const styles = StyleSheet.create({
     fontSize: 15,
   },
 
-  view1_text3: {
-    color: '#FFF',
-    textAlign: 'center',
-    fontSize: 15,
-  },
-
-  view1_text4: {
-    color: '#FFF',
-    textAlign: 'center',
-    fontSize: 15,
-  },
-
   view2: {
     width: WIDTH,
     height: 35,
-    marginTop: 10,
     marginLeft: 0,
   },
 
@@ -345,17 +178,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFF',
     borderWidth: 1,
     width: WIDTH,
-    height: 300,
+    height: 200,
     marginTop: 25,
   },
 
   successrate_table_header: {
     margin: 0,
     color: '#000',
-  },
-
-  successrate_table_row: {
-    height: 10,
   },
 
   submit_button: {

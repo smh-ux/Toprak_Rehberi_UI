@@ -9,6 +9,7 @@ import {
   FlatList,
 } from 'react-native';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const WIDTH = Dimensions.get('screen').width;
 const HEIGHT = Dimensions.get('screen').height;
@@ -17,20 +18,37 @@ const MyLandHarvestScreen = ({ navigation }) => {
   const [data, setData] = useState([]);
 
   const handlePress = (item) => {
-    navigation.navigate('FeedBack', { item });
+    navigation.navigate('FeedBack', { item }); 
   };
 
   useEffect(() => {
-    axios
-      .get('http://192.168.125.44:8080/api/lands/fetching')
-      .then((response) => {
-        setData(response.data);
-        console.log(response.data);
-      })
-      .catch((error) => {
+    const fetchData = async () => {
+      try {
+        const token = await AsyncStorage.getItem('userToken');
+        const userId = await AsyncStorage.getItem('userId'); // Kullanıcı ID'sini burada alabilirsiniz
+
+        console.log('token: ', token);
+        console.log('ID: ', userId);
+
+        if (token && userId) {
+          const response = await axios.get(
+            `http://192.168.125.44:8080/api/lands/user/${userId}`,
+            {
+              headers: { Authorization: `Bearer ${token}` },
+            }
+          );
+          setData(response.data);
+        } else {
+          console.log("Token veya kullanıcı ID'si bulunamadı.");
+        }
+      } catch (error) {
         console.log(error);
-      });
-  }, []);
+      }
+    };
+
+    fetchData();
+
+    }, []);
 
   return (
     <SafeAreaView style={styles.myland_container}>

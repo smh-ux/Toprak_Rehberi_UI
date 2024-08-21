@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
   View,
@@ -8,39 +8,64 @@ import {
   Text,
   TouchableOpacity,
   SafeAreaView,
+  FlatList,
 } from 'react-native';
 import { DataTable } from 'react-native-paper';
+import axios from 'axios';
 
 const WIDTH = Dimensions.get('screen').width;
 const HEIGHT = Dimensions.get('screen').height;
 
 const MyLandInfoScreen = ({ route, navigation }) => {
   const { item } = route.params;
+  const [data, setData] = useState([]);
+  const landId = item.id;
 
   const back = '<';
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          `http://192.168.125.44:8080/api/products/land/${landId}`
+        );
+        setData(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchData();
+  }, [landId]);
 
   return (
     <SafeAreaView>
       <TouchableOpacity
         style={styles.mylandinfo_add_button_opacity}
-        onPress={() => navigation.navigate('SuccessRate')}>
+        onPress={() => navigation.navigate('SuccessRate', { item })}>
         <View style={styles.mylandinfo_add_button}>
           <Text style={styles.mylandinfo_add_button_text}>Ürün Ekle</Text>
         </View>
       </TouchableOpacity>
       <ScrollView
-        style={{ zIndex: 2, marginTop: 80 }}
+        style={{ zIndex: 2, marginTop: 0 }}
         showsVerticalScrollIndicator={false}>
-        <View style={{ width: WIDTH, height: HEIGHT - 220 }}></View>
+        <View style={{width:WIDTH, height:HEIGHT-150}}></View>
         <DataTable style={styles.mylandinfo_table}>
           <DataTable.Header style={styles.mylandinfo_table_header}>
             <DataTable.Title>Mahsul Adı</DataTable.Title>
             <DataTable.Title>Ekilen m2</DataTable.Title>
           </DataTable.Header>
-          <Table product_name={'Domates'} product_planting_area={500} />
-          <Table product_name={'Taze Patates'} product_planting_area={200} />
-          <Table product_name={'Biber'} product_planting_area={300} />
+          
+          <FlatList
+          data={data}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
+            <Table product_name={item.name} product_planting_area={item.plantedArea} />
+          )}
+        />
         </DataTable>
+        
       </ScrollView>
       <View style={styles.mylandinfo_container}>
         <View style={styles.mylandinfo_main_info_container}>

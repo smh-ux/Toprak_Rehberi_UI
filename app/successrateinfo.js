@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+simport React, { useState } from 'react';
 import {
   StyleSheet,
   View,
