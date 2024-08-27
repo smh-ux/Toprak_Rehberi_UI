@@ -38,7 +38,7 @@ const LoginScreen = ({ navigation }) => {
   const validateToken = async (token) => {
     try {
       const response = await axios.get(
-        `http://192.168.125.44:8080/api/tokens/validate`, 
+        `http://192.168.125.44:8080/api/tokens/validate`,
         { params: { token } }
       );
       return response.data; // Token geçerli mi döndür
@@ -104,7 +104,7 @@ const LoginScreen = ({ navigation }) => {
     <SafeAreaView>
       <View style={styles.login_top_container}>
         <Image
-          source={require('./assets/welcome2.jpeg')}
+          source={require('../assets/images/welcome2.jpeg')}
           style={styles.login_top_container_image}
         />
         <Text style={styles.login_top_container_title}>Toprak Rehberi</Text>

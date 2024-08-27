@@ -9,9 +9,9 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
-import domates from './assets/domates.jpg';
-import biber from './assets/biber.jpg';
-import fasulye from './assets/fasulye.jpg';
+import domates from '../assets/images/domates.jpg';
+import biber from '../assets/images/biber.jpg';
+import fasulye from '../assets/images/fasulye.jpg';
 
 const WIDTH = Dimensions.get('screen').width;
 const HEIGHT = Dimensions.get('screen').height;

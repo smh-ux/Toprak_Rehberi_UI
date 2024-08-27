@@ -26,14 +26,14 @@ const SuccessRateScreen = ({ route, navigation }) => {
   } else {
     console.log(item);
   }
-  
+
   return (
     <SafeAreaView>
       <View style={styles.successrate_container}>
         <View style={{ flexDirection: 'column' }}>
           <View style={styles.view1}>
-            <Text style={styles.view1_text1}>Sn.{name}</Text>
-            <Text style={styles.view1_text2}>{address}</Text>
+            <Text style={styles.view1_text1}>Sn. {item.user.username}</Text>
+            <Text style={styles.view1_text2}>{item.city} {item.neighborhood} mahallesi {item.town} / {item.city}</Text>
           </View>
           <View style={styles.view2}>
             <Text style={styles.view2_text1}>Arazi no: {land_no}</Text>
@@ -49,29 +49,29 @@ const SuccessRateScreen = ({ route, navigation }) => {
         </View>
         <DataTable style={styles.successrate_table}>
           <DataTable.Header style={styles.successrate_table_header}>
-            <DataTable.Title>Mahsul Adı</DataTable.Title>
-            <DataTable.Title>Hasat Dönemi</DataTable.Title>
-            <DataTable.Title>Başarı Oranı</DataTable.Title>
-            <DataTable.Title>Ekim Dönemi</DataTable.Title>
+            <DataTable.Title textStyle={{color:'#FFF'}}>Mahsul Adı</DataTable.Title>
+            <DataTable.Title textStyle={{color:'#FFF'}}>Ekim Dönemi</DataTable.Title>
+            <DataTable.Title textStyle={{color:'#FFF'}}>Başarı Oranı</DataTable.Title>
+            <DataTable.Title textStyle={{color:'#FFF'}}>Hasat Dönemi</DataTable.Title>
           </DataTable.Header>
           <ScrollView vertical>
             <Table
               product_name={'Arpa'}
-              product_harvest_time={'İlkbahar/Yaz'}
+              product_planting_time={'Ocak/Şubat'}
               success_rate={44}
-              product_planting_time={'Kasım/Aralık'}
+              product_harvest_time={'Mart/Nisan'}
             />
             <Table
               product_name={'Domates'}
-              product_harvest_time={'Yaz/Sonbahar'}
+              product_planting_time={'Haziran/Temmuz'}
               success_rate={82}
-              product_planting_time={'Mayıs/Haziran'}
+              product_harvest_time={'Ağustos/Eylül'}
             />
             <Table
               product_name={'Taze Fasulye'}
-              product_harvest_time={'Yaz'}
+              product_planting_time={'Ekim/Kasım'}
               success_rate={71}
-              product_planting_time={'Şubat/Mart'}
+              product_harvest_time={'Aralık/Ocak'}
             />
           </ScrollView>
         </DataTable>
@@ -96,25 +96,26 @@ const SuccessRateScreen = ({ route, navigation }) => {
 
 const Table = ({
   product_name,
-  product_harvest_time,
-  success_rate,
   product_planting_time,
+  success_rate,
+  product_harvest_time,
+
 }) => {
   return (
     <DataTable.Row>
-      <DataTable.Cell textStyle={{ fontSize: 13 }}>
+      <DataTable.Cell textStyle={{ fontSize: 13, color:'#FFF' }}>
         {product_name}
       </DataTable.Cell>
-      <DataTable.Cell textStyle={{ fontSize: 13 }}>
-        {product_harvest_time}
+      <DataTable.Cell textStyle={{ fontSize: 13, color:'#FFF' }}>
+        {product_planting_time}
       </DataTable.Cell>
       <DataTable.Cell
-        textStyle={{ fontSize: 13 }}
+        textStyle={{ fontSize: 13, color:'#FFF' }}
         style={{ marginRight: -20, marginLeft: 20 }}>
         % {success_rate}
       </DataTable.Cell>
-      <DataTable.Cell textStyle={{ fontSize: 13 }}>
-        {product_planting_time}
+      <DataTable.Cell textStyle={{ fontSize: 13, color:'#FFF'}}>
+        {product_harvest_time}
       </DataTable.Cell>
     </DataTable.Row>
   );
@@ -175,11 +176,13 @@ const styles = StyleSheet.create({
 
   successrate_table: {
     borderColor: '#FFF',
-    backgroundColor: '#FFF',
+    backgroundColor: '#000',
     borderWidth: 1,
-    width: WIDTH,
+    width: WIDTH-40,
     height: 200,
     marginTop: 25,
+    marginLeft: 20,
+    borderRadius: 20
   },
 
   successrate_table_header: {

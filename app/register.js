@@ -45,7 +45,7 @@ const RegisterScreen = ({ navigation }) => {
     <SafeAreaView>
       <View style={styles.register_top_container}>
         <Image
-          source={require('./assets/welcome2.jpeg')}
+          source={require('../assets/images/welcome2.jpeg')}
           style={styles.register_top_container_image}
         />
         <Text style={styles.register_top_container_title}>Toprak Rehberi</Text>

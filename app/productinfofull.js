@@ -20,7 +20,7 @@ const ProductInfoFullScreen = ({ navigation }) => {
         <View style={styles.card}>
           <ScrollView showsVerticalScrollIndicator={false}>
             <Image
-              source={require('./assets/domates.jpg')}
+              source={require('../assets/images/domates.jpg')}
               style={styles.image}
             />
             <Text style={styles.text}>
@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
   container: {
     width: WIDTH,
     height: HEIGHT,
-    backgroundColor: '#FFF',
+    backgroundColor: '#000',
   },
 
   title: {
@@ -85,6 +85,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
     marginBottom: 20,
+    color: '#FFF'
   },
 
   card: {
