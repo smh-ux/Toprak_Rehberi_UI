@@ -20,31 +20,47 @@ const ChooseScreen = ({ navigation }) => {
     <ScrollView>
       <TouchableOpacity onPress={() => navigation.navigate('MyLand')}>
         <View style= {styles.card}>
-          <Image 
-            source={require('./assets/planting.jpg')}
+          <Image
+            source={require('../assets/images/planting.jpg')}
             style={styles.image}
           />
         </View>
       </TouchableOpacity>
       <TouchableOpacity onPress={() => navigation.navigate('MyLandHarvest')}>
         <View style={styles.card}>
-        <Image 
-          source={require('./assets/harvesting.jpg')}
+        <Image
+          source={require('../assets/images/harvesting.jpg')}
           style={styles.image}
         />
         </View>
       </TouchableOpacity>
       <TouchableOpacity onPress={() => navigation.navigate('AnyLandInfo')}>
         <View style={styles.card}>
-        <Image 
-          source={require('./assets/info1.jpg')}
+        <Image
+          source={require('../assets/images/info1.jpg')}
+          style={styles.image}
+        />
+        </View>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate('LandDelete')}>
+        <View style={styles.card}>
+        <Image
+          source={require('../assets/images/delete_ai.jpeg')}
+          style={styles.image}
+        />
+        </View>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate('Logout')}>
+        <View style={styles.card}>
+        <Image
+          source={require('../assets/images/logout_ai.jpeg')}
           style={styles.image}
         />
         </View>
       </TouchableOpacity>
       <View style={{height:100}}></View>
       </ScrollView>
-  
+
       </View>
     </SafeAreaView>
   );
@@ -60,9 +76,10 @@ const styles = StyleSheet.create({
   card: {
     width: WIDTH-100,
     height: 250,
-    backgroundColor: '#FFF',
+    backgroundColor: '#000',
     marginLeft: 50,
-    marginTop: 80,
+    marginTop: 20,
+    marginBottom: 60,
     borderRadius: 50,
   },
 

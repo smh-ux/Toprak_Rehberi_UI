@@ -10,6 +10,10 @@ import {
 } from 'react-native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { LogBox } from 'react-native';
+
+LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
+
 
 const WIDTH = Dimensions.get('screen').width;
 const HEIGHT = Dimensions.get('screen').height;
@@ -25,7 +29,7 @@ const MyLandScreen = ({ navigation }) => {
     const fetchData = async () => {
       try {
         const token = await AsyncStorage.getItem('userToken');
-        const userId = await AsyncStorage.getItem('userId'); // Kullanıcı ID'sini burada alabilirsiniz
+        const userId = await AsyncStorage.getItem('userId');
 
         console.log('token: ', token);
         console.log('ID: ', userId);

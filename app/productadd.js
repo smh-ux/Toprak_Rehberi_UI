@@ -20,12 +20,12 @@ const ProductAddScreen = ({ route, navigation }) => {
   const [plantedArea, setPlantedArea] = useState('');
   const [landId, setLandId] = useState('');
 
-  const back = '<';
+  const [selectedPeriod, setSelectedPeriod] = useState('');
+  const [selectedSR, setSelectedSR] = useState('');
 
   const { item } = route.params || {};
 
   console.log('selected: ', selected);
-  console.log('setselected: ', setSelected);
 
   if(!item) {
     console.log('item yok')
@@ -35,11 +35,9 @@ const ProductAddScreen = ({ route, navigation }) => {
 
   useEffect(() => {
     if (item) {
-      setLandId(item.id); // item varsa, landId'yi ayarla
+      setLandId(item.id);
     }
   }, [item]);
-
-  console.log(landId);
 
   const data = [
     { key: '1', value: 'Domates', disabled: false },
@@ -48,8 +46,27 @@ const ProductAddScreen = ({ route, navigation }) => {
     { key: '4', value: 'Taze Patates', disabled: false },
     { key: '5', value: 'Bamya', disabled: false },
     { key: '6', value: 'Arpa', disabled: false },
-    { key: '7', value: 'Buğday', disabled: false }, 
+    { key: '7', value: 'Buğday', disabled: false },
+    { key: '8', value: 'Soğan', disabled: false},
+    { key: '9', value: 'Patlıcan', disabled: false},
+    { key: '10', value: 'Mısır', disabled: false },
   ];
+
+  const handleProductSelect = (productName) => {
+    const selectedNew = data.find((data) => data.value === productName);
+    if (selectedNew) {
+      setSelectedPeriod(selectedNew.key);
+      setSelectedSR(selectedNew.key);
+    }
+  };
+
+  console.log(data);
+
+  console.log("LandID: ", landId);
+
+  console.log("PeriodID: ", selectedPeriod);
+
+  console.log("SRID: ", selectedSR);
 
   const handleAdding = async () => {
     if (!selected || !plantedArea) {
@@ -57,12 +74,16 @@ const ProductAddScreen = ({ route, navigation }) => {
       return;
     }
 
+    handleProductSelect(selected);
+
     try {
       const response = await axios.post(
         'http://192.168.125.44:8080/api/products/adding',
         {
           name: selected,
           plantedArea: parseInt(plantedArea, 10),
+          periodId: selectedPeriod,
+          successRateId: selectedSR,
           landId: landId,
         }
       );
@@ -94,7 +115,10 @@ const ProductAddScreen = ({ route, navigation }) => {
         dropdownStyles={styles.productAdd_select_list_drop}
         dropdownItemStyles={styles.productAdd_select_list_items}
         dropdownTextStyles={styles.productAdd_select_list_item_text}
-        setSelected={(val) => setSelected(val)}
+        setSelected={(val) => {
+          setSelected(val);
+          handleProductSelect(val);
+        }}
         data={data}
         save="value"
       />

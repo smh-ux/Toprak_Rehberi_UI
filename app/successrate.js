@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
   View,
@@ -7,88 +7,99 @@ import {
   ScrollView,
   Text,
   TouchableOpacity,
+  FlatList
 } from 'react-native';
 import { DataTable } from 'react-native-paper';
+import axios from 'axios';
 
 const WIDTH = Dimensions.get('screen').width;
 const HEIGHT = Dimensions.get('screen').height;
-
-const name = 'Semih Okumuş';
-const address = 'Ankara Demetevler mahallesi Çankaya/Ankara';
 
 const land_no = 2;
 
 const SuccessRateScreen = ({ route, navigation }) => {
   const { item } = route.params;
+  const periodId = item.id;
+  const [data, setData] = useState('');
 
   if(!item) {
     console.log('item yok')
   } else {
-    console.log(item);
+    console.log(item.neighborhood_id);
   }
-  
+
+    useEffect(() => {
+      const fetchData = async () => {
+        try {
+          const response = await axios.get(
+            `http://192.168.125.44:8080/api/products/fetching`
+          );
+          setData(response.data)
+        } catch (e) {
+          console.log(e);
+        }
+      };
+      fetchData();
+    }, [periodId]);
+
+  console.log('Data: ', data);
+
   return (
     <SafeAreaView>
       <View style={styles.successrate_container}>
-        <View style={{ flexDirection: 'column' }}>
-          <View style={styles.view1}>
-            <Text style={styles.view1_text1}>Sn.{name}</Text>
-            <Text style={styles.view1_text2}>{address}</Text>
+          <View style={{ flexDirection: 'column' }}>
+            <View style={styles.view1}>
+              <Text style={styles.view1_text1}>Sn. {item.user.username}</Text>
+              <Text style={styles.view1_text2}>{item.city} {item.neighborhood} mahallesi {item.town} / {item.city}</Text>
+            </View>
+            <View style={styles.view2}>
+              <Text style={styles.view2_text1}>Arazi no: {land_no}</Text>
+            </View>
           </View>
-          <View style={styles.view2}>
-            <Text style={styles.view2_text1}>Arazi no: {land_no}</Text>
+          <View>
+            <View style={styles.view3}>
+              <Text style={styles.view3_text1}>
+                Arsanız için sunulmuş olan mahsul başarı oranı aşağıda yer
+                almaktadır.
+              </Text>
+            </View>
           </View>
-        </View>
-        <View>
-          <View style={styles.view3}>
-            <Text style={styles.view3_text1}>
-              Arsanız için sunulmuş olan mahsul başarı oranı aşağıda yer
-              almaktadır.
-            </Text>
-          </View>
-        </View>
-        <DataTable style={styles.successrate_table}>
-          <DataTable.Header style={styles.successrate_table_header}>
-            <DataTable.Title>Mahsul Adı</DataTable.Title>
-            <DataTable.Title>Hasat Dönemi</DataTable.Title>
-            <DataTable.Title>Başarı Oranı</DataTable.Title>
-            <DataTable.Title>Ekim Dönemi</DataTable.Title>
-          </DataTable.Header>
-          <ScrollView vertical>
-            <Table
-              product_name={'Arpa'}
-              product_harvest_time={'İlkbahar/Yaz'}
-              success_rate={44}
-              product_planting_time={'Kasım/Aralık'}
-            />
-            <Table
-              product_name={'Domates'}
-              product_harvest_time={'Yaz/Sonbahar'}
-              success_rate={82}
-              product_planting_time={'Mayıs/Haziran'}
-            />
-            <Table
-              product_name={'Taze Fasulye'}
-              product_harvest_time={'Yaz'}
-              success_rate={71}
-              product_planting_time={'Şubat/Mart'}
-            />
-          </ScrollView>
-        </DataTable>
-        <TouchableOpacity
-          style={styles.submit_button}
-          onPress={() =>
-            navigation.navigate('ProductAdd', {
-              item,
-            })
-          }>
-          <Text style={styles.submit_button_text}>Ürün Eklemeye Hazırım</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.submit_button}
-          onPress={() => navigation.navigate('ProductInfo')}>
-          <Text style={styles.submit_button_text}>Ürün Yetiştirme Rehberi</Text>
-        </TouchableOpacity>
+          <DataTable style={styles.successrate_table}>
+            <DataTable.Header style={styles.successrate_table_header}>
+              <DataTable.Title textStyle={{color:'#FFF'}}>Mahsul Adı</DataTable.Title>
+              <DataTable.Title textStyle={{color:'#FFF'}}>Ekim Dönemi</DataTable.Title>
+              <DataTable.Title textStyle={{color:'#FFF'}}>Başarı Oranı</DataTable.Title>
+              <DataTable.Title textStyle={{color:'#FFF'}}>Hasat Dönemi</DataTable.Title>
+            </DataTable.Header>
+             <FlatList
+             data={data}
+             keyExtractor={(item) => item.id}
+             renderItem={({ item }) => (
+               <Table
+                 product_name={item.name}
+                 product_planting_time1={item.period.plant_start}
+                 product_planting_time2={item.period.plant_end}
+                 success_rate={item.successRate.rate}
+                 product_harvest_time1={item.period.harvest_start}
+                 product_harvest_time2={item.period.harvest_end}
+               />
+            )}
+           />
+          </DataTable>
+          <TouchableOpacity
+            style={styles.submit_button}
+            onPress={() =>
+              navigation.navigate('ProductAdd', {
+                item,
+              })
+            }>
+            <Text style={styles.submit_button_text}>Ürün Eklemeye Hazırım</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.submit_button}
+            onPress={() => navigation.navigate('ProductInfo')}>
+            <Text style={styles.submit_button_text}>Ürün Yetiştirme Rehberi</Text>
+          </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
@@ -96,25 +107,28 @@ const SuccessRateScreen = ({ route, navigation }) => {
 
 const Table = ({
   product_name,
-  product_harvest_time,
+  product_planting_time1,
+  product_planting_time2,
   success_rate,
-  product_planting_time,
+  product_harvest_time1,
+  product_harvest_time2,
+
 }) => {
   return (
     <DataTable.Row>
-      <DataTable.Cell textStyle={{ fontSize: 13 }}>
+      <DataTable.Cell textStyle={{ fontSize: 13, color:'#FFF' }}>
         {product_name}
       </DataTable.Cell>
-      <DataTable.Cell textStyle={{ fontSize: 13 }}>
-        {product_harvest_time}
+      <DataTable.Cell textStyle={{ fontSize: 13, color:'#FFF' }}>
+        {product_planting_time1}/{product_planting_time2}
       </DataTable.Cell>
       <DataTable.Cell
-        textStyle={{ fontSize: 13 }}
+        textStyle={{ fontSize: 13, color:'#FFF' }}
         style={{ marginRight: -20, marginLeft: 20 }}>
         % {success_rate}
       </DataTable.Cell>
-      <DataTable.Cell textStyle={{ fontSize: 13 }}>
-        {product_planting_time}
+      <DataTable.Cell textStyle={{ fontSize: 13, color:'#FFF'}}>
+        {product_harvest_time1}/{product_harvest_time2}
       </DataTable.Cell>
     </DataTable.Row>
   );
@@ -175,11 +189,13 @@ const styles = StyleSheet.create({
 
   successrate_table: {
     borderColor: '#FFF',
-    backgroundColor: '#FFF',
+    backgroundColor: '#000',
     borderWidth: 1,
-    width: WIDTH,
+    width: WIDTH-40,
     height: 200,
     marginTop: 25,
+    marginLeft: 20,
+    borderRadius: 20
   },
 
   successrate_table_header: {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   SafeAreaView,
   View,
@@ -8,63 +8,55 @@ import {
   StyleSheet,
   ScrollView,
 } from 'react-native';
+import axios from 'axios';
 
 const WIDTH = Dimensions.get('screen').width;
 const HEIGHT = Dimensions.get('screen').height;
 
-const ProductInfoFullScreen = ({ navigation }) => {
+const ProductInfoFullScreen = ({ route, navigation }) => {
+
+  const { item } = route.params;
+  const [infoFull, setInfoFull] = useState('');
+
+  const getImageSource = (imgPath) => {
+    switch (imgPath) {
+      case '../assets/images/domates.jpg':
+        return require('../assets/images/domates.jpg');
+      case '../assets/images/biber.jpg':
+        return require('../assets/images/biber.jpg');
+      case '../assets/images/fasulye.jpg':
+        return require('../assets/images/fasulye.jpg');
+      case '../assets/images/arpa.jpg':
+        return require('../assets/images/arpa.jpg');
+      case '../assets/images/buğday.jpg':
+        return require('../assets/images/buğday.jpg');
+      case '../assets/images/bamya.jpg':
+        return require('../assets/images/bamya.jpg');
+      case '../assets/images/patates.jpg':
+        return require('../assets/images/patates.jpg');
+      case '../assets/images/soğan.jpg':
+        return require('../assets/images/soğan.jpg');
+      case '../assets/images/patlıcan.jpg':
+        return require('../assets/images/patlıcan.jpg');
+      case '../assets/images/mısır.jpg':
+        return require('../assets/images/mısır.jpg');
+      default:
+        return "empty";
+    }
+  };
+
   return (
     <SafeAreaView>
       <View style={styles.container}>
-        <Text style={styles.title}>Domates</Text>
+        <Text style={styles.title}>{item.title}</Text>
         <View style={styles.card}>
           <ScrollView showsVerticalScrollIndicator={false}>
             <Image
-              source={require('./assets/domates.jpg')}
+              source={getImageSource(item.img)}
               style={styles.image}
             />
             <Text style={styles.text}>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc
-              sodales cursus sem ut congue. Pellentesque vestibulum ex non
-              luctus maximus. Nullam eu tempor risus. Fusce eget est libero.
-              Vestibulum cursus vestibulum gravida. Cras vitae imperdiet augue.
-              Ut imperdiet ac diam quis semper. Curabitur est libero, dignissim
-              et magna in, tristique vestibulum nibh. Praesent ac nisi at elit
-              maximus porta. Vivamus scelerisque tortor et ante vulputate
-              pellentesque. In lacinia dignissim arcu in imperdiet. Orci varius
-              natoque penatibus et magnis dis parturient montes, nascetur
-              ridiculus mus. Morbi porta et lectus non pharetra. Morbi ultrices,
-              magna a rhoncus viverra, tellus tortor porttitor ante, non
-              accumsan elit felis quis lectus. Sed volutpat turpis magna,
-              convallis scelerisque diam dignissim in. Sed eu nulla suscipit,
-              efficitur diam ut, finibus tortor. Nam tristique dolor ac ultrices
-              faucibus. Cras id odio diam. Lorem ipsum dolor sit amet,
-              consectetur adipiscing elit. Duis enim eros, iaculis a hendrerit
-              in, faucibus nec mi. Nulla a nisl turpis. Orci varius natoque
-              penatibus et magnis dis parturient montes, nascetur ridiculus mus.
-              Vivamus rhoncus felis metus, non malesuada ligula egestas et.
-              Phasellus ac iaculis odio. Praesent vel fermentum lorem, imperdiet
-              tempor justo. Praesent ac efficitur ipsum. Praesent semper
-              molestie tristique. Donec eu diam lacinia, efficitur nunc vel,
-              imperdiet massa. Quisque in nunc cursus, hendrerit erat et,
-              efficitur leo. Nam consectetur ligula sit amet dolor accumsan, a
-              tincidunt libero hendrerit. Suspendisse vulputate diam suscipit,
-              bibendum purus et, hendrerit erat. In hac habitasse platea
-              dictumst. Cras vitae quam et orci rhoncus rutrum. Nunc ac bibendum
-              eros. Nam porttitor, nisi in ultricies gravida, orci ex vulputate
-              arcu, nec cursus nulla augue vel libero. In hac habitasse platea
-              dictumst. Aenean ultrices fermentum magna eu tristique. Fusce in
-              nisi ut neque scelerisque pulvinar. Donec tincidunt cursus
-              sodales. Integer at metus quis erat bibendum malesuada in at nisl.
-              Aliquam sodales vel massa eu lacinia. Donec tristique consequat
-              quam vel tristique. Duis hendrerit ipsum nec dui condimentum
-              ullamcorper. Aenean vel lacus non ante elementum malesuada. Donec
-              vel quam imperdiet, commodo tortor quis, sodales purus. Aliquam
-              erat volutpat. Curabitur fringilla mi at porta hendrerit. Vivamus
-              iaculis risus id nulla interdum porta ac at dui. Ut sit amet erat
-              hendrerit, imperdiet mauris vitae, vehicula nisi. Donec semper
-              pellentesque ligula, vitae scelerisque sem blandit vel. Nullam ut
-              purus tortor. Fusce facilisis arcu non mattis sollicitudin.
+              {item.description}
             </Text>
           </ScrollView>
         </View>
@@ -77,7 +69,7 @@ const styles = StyleSheet.create({
   container: {
     width: WIDTH,
     height: HEIGHT,
-    backgroundColor: '#FFF',
+    backgroundColor: '#000',
   },
 
   title: {
@@ -85,6 +77,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
     marginBottom: 20,
+    color: '#FFF'
   },
 
   card: {

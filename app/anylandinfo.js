@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import { SelectList } from 'react-native-dropdown-select-list';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const WIDTH = Dimensions.get('screen').width;
 const HEIGHT = Dimensions.get('screen').height;
@@ -26,11 +27,13 @@ const AnyLandInfoScreen = ({ navigation }) => {
   const [selectedTown, setSelectedTown] = useState('');
   const [selectedNeighborhood, setSelectedNeighborhood] = useState('');
 
+  const [userId, setUserId] = useState('');
+  const [token, setToken] = useState('');
+
   const dataType = [
     { key: '1', value: 'Tarla', disabled: false },
     { key: '2', value: 'Bağ', disabled: false },
     { key: '3', value: 'Bahçe', disabled: false },
-    { key: '4', value: 'Diğer', disabled: false },
   ];
 
   useEffect(() => {
@@ -89,7 +92,7 @@ const AnyLandInfoScreen = ({ navigation }) => {
         .get(
           `http://192.168.125.44:8080/api/location/neighborhoods/${selectedTown}`
         )
-        .then((response) => { 
+        .then((response) => {
           const neighborhoodData = response.data.map((neighborhood) => ({
             key: neighborhood.id,
             value: neighborhood.name,
@@ -103,8 +106,26 @@ const AnyLandInfoScreen = ({ navigation }) => {
     }
   }, [selectedTown]);
 
-  const handleAdding = () => {
-    navigation.navigate('SuccessRateInfo');
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const token = await AsyncStorage.getItem('userToken');
+        const userId = await AsyncStorage.getItem('userId');
+
+        console.log('token: ', token);
+        console.log('ID: ', userId);
+
+
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const handleShowing = (item) => {
+    navigation.navigate('SuccessRateInfoOther', { type: type, city: city, town: town, neighborhood: neighborhood });
   };
 
   return (
@@ -203,7 +224,7 @@ const AnyLandInfoScreen = ({ navigation }) => {
 
       <TouchableOpacity
         style={styles.landAdd_submit_button}
-        onPress={handleAdding}>
+        onPress={handleShowing}>
         <Text style={styles.landAdd_submit_button_text}>Göster</Text>
       </TouchableOpacity>
     </SafeAreaView>

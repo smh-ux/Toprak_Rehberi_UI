@@ -20,7 +20,6 @@ const LoginScreen = ({ navigation }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  // Token oluşturma
   const generateToken = async (userId) => {
     try {
       const response = await axios.post(
@@ -28,20 +27,19 @@ const LoginScreen = ({ navigation }) => {
         null,
         { params: { userId } }
       );
-      return response.data.token; // Token döndür
+      return response.data.token;
     } catch (error) {
       console.error('Token oluşturma hatası:', error);
     }
   };
 
-  // Token doğrulama
   const validateToken = async (token) => {
     try {
       const response = await axios.get(
-        `http://192.168.125.44:8080/api/tokens/validate`, 
+        `http://192.168.125.44:8080/api/tokens/validate`,
         { params: { token } }
       );
-      return response.data; // Token geçerli mi döndür
+      return response.data;
     } catch (error) {
       console.error('Token doğrulama hatası:', error);
     }
@@ -66,8 +64,6 @@ const LoginScreen = ({ navigation }) => {
 
       await AsyncStorage.setItem('userToken', token);
       await AsyncStorage.setItem('userId', userId.toString());
-
-      // Giriş yaptıktan sonra doğrudan yönlendirin
       navigation.navigate('Choose');
     } catch (error) {
       Alert.alert('Hata', 'Giriş Hatalı');
@@ -86,7 +82,6 @@ const LoginScreen = ({ navigation }) => {
         const isValid = await validateToken(token);
         if (isValid) {
           console.log('Token geçerli.');
-          // Kullanıcıyı korunan bir ekrana yönlendirin
         } else {
           console.log('Token geçersiz.');
           navigation.navigate('Login');
@@ -104,7 +99,7 @@ const LoginScreen = ({ navigation }) => {
     <SafeAreaView>
       <View style={styles.login_top_container}>
         <Image
-          source={require('./assets/welcome2.jpeg')}
+          source={require('../assets/images/welcome2.jpeg')}
           style={styles.login_top_container_image}
         />
         <Text style={styles.login_top_container_title}>Toprak Rehberi</Text>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -14,11 +14,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const WIDTH = Dimensions.get('screen').width;
 const HEIGHT = Dimensions.get('screen').height;
 
-const MyLandHarvestScreen = ({ navigation }) => {
+const LandDeleteScreen = ({ navigation }) => {
   const [data, setData] = useState([]);
 
   const handlePress = (item) => {
-    navigation.navigate('FeedBack', { item });
+    navigation.navigate('LandDeleteConsent', { item });
   };
 
   useEffect(() => {
@@ -50,13 +50,13 @@ const MyLandHarvestScreen = ({ navigation }) => {
 
     }, []);
 
-  return (
+  return(
     <SafeAreaView style={styles.myland_container}>
       <View style={styles.mylands}>
       {data.length === 0 ? (
         <View style={{ margin: 'auto', width: WIDTH }}>
           <Text style={styles.no_data_text}>
-            Hasat edilebilecek arazi bulunamadı.
+            Silinebilecek arazi bulunamadı.
           </Text>
           <TouchableOpacity
             style={{
@@ -89,7 +89,7 @@ const MyLandHarvestScreen = ({ navigation }) => {
                 fontSize: 20,
                 paddingBottom: 65,
               }}>
-              Hasat edeceğiniz araziyi seçin:
+              Silmek istediğiniz araziyi seçin:
             </Text>
         <FlatList
           data={data}
@@ -126,7 +126,7 @@ const MyLandHarvestScreen = ({ navigation }) => {
       </View>
     </SafeAreaView>
   );
-};
+}
 
 const styles = StyleSheet.create({
   myland_container: {
@@ -178,4 +178,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default MyLandHarvestScreen;
+export default LandDeleteScreen;

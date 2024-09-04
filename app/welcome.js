@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { 
+import {
     SafeAreaView,
     View,
     Image,
@@ -15,8 +15,8 @@ const HEIGHT = Dimensions.get('screen').height;
 const WelcomeScreen = ({ navigation }) => {
     return(
       <View style={styles.welcome_container}>
-        <Image 
-          source={require('./assets/welcome3.png')}
+        <Image
+          source={require('../assets/images/welcome3.png')}
           style={styles.welcome_img}
         />
         <Text style={styles.title_text}>Toprak Rehberi</Text>
@@ -35,15 +35,15 @@ const styles = StyleSheet.create({
       backgroundColor: '#000',
       flex: 1
     },
-  
+
     welcome_img: {
       width: 200,
       height: 200,
       marginLeft: WIDTH/2-100,
-      marginTop: HEIGHT/2-200,
+      marginTop: HEIGHT/2-250,
       borderRadius: 35,
     },
-  
+
     title_text: {
       fontSize: 30,
       color: '#fff',
@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
       marginTop: 50,
       textAlign: 'center'
     },
-  
+
     welcome_text: {
       fontSize: 20,
       color: '#FFF',
@@ -60,20 +60,20 @@ const styles = StyleSheet.create({
       marginLeft: 20,
       marginRight: 20,
     },
-  
+
     welcome_button: {
       backgroundColor: '#FFF',
       width: WIDTH-50,
       height: 55,
       marginLeft: 25,
-      marginTop: 'auto',
+      marginTop: 100,
       marginBottom: 50,
       borderRadius: 20,
     },
-  
+
     welcome_button_text: {
       color: '#000',
-      fontSize: 20,
+      fontSize: 22,
       fontWeight: 'bold',
       margin: 'auto'
     }

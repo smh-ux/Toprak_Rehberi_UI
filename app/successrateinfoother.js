@@ -20,12 +20,15 @@ const address = 'Ankara Demetevler mahallesi Çankaya/Ankara';
 
 const land_no = 2;
 
-const SuccessRateInfoScreen = ({ route, navigation }) => {
-  const { item } = route.params;
-  const periodId = item.id;
-  const [data, setData] = useState('');
+const SuccessRateInfoOtherScreen = ({ route, navigation }) => {
+  const [data, setData]  = useState('');
 
-  console.log('SuccessRateInfo: ', item);
+  const { type, city, town, neighborhood } = route.params;
+
+  console.log("Type: ", type);
+  console.log("City: ", city);
+  console.log("Town: ", town);
+  console.log("Neighborhood: ", neighborhood);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -39,7 +42,7 @@ const SuccessRateInfoScreen = ({ route, navigation }) => {
       }
     };
     fetchData();
-  }, [periodId]);
+  });
 
   return (
     <SafeAreaView>
@@ -187,4 +190,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SuccessRateInfoScreen;
+export default SuccessRateInfoOtherScreen;

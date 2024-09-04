@@ -12,6 +12,9 @@ import {
 } from 'react-native';
 import { DataTable } from 'react-native-paper';
 import axios from 'axios';
+import { LogBox } from 'react-native';
+
+LogBox.ignoreLogs(['VirtualizedLists should never be nested'])
 
 const WIDTH = Dimensions.get('screen').width;
 const HEIGHT = Dimensions.get('screen').height;
@@ -20,8 +23,6 @@ const MyLandInfoScreen = ({ route, navigation }) => {
   const { item } = route.params;
   const [data, setData] = useState([]);
   const landId = item.id;
-
-  const back = '<';
 
   useEffect(() => {
     const fetchData = async () => {
@@ -41,6 +42,13 @@ const MyLandInfoScreen = ({ route, navigation }) => {
   return (
     <SafeAreaView>
       <TouchableOpacity
+        style={styles.mylandinfo_show_button_opacity}
+        onPress={() => navigation.navigate('SuccessRateInfo', { item })}>
+        <View style={styles.mylandinfo_show_button}>
+          <Text style={styles.mylandinfo_show_button_text}>Toprak Rehberi</Text>
+        </View>
+      </TouchableOpacity>
+      <TouchableOpacity
         style={styles.mylandinfo_add_button_opacity}
         onPress={() => navigation.navigate('SuccessRate', { item })}>
         <View style={styles.mylandinfo_add_button}>
@@ -50,13 +58,13 @@ const MyLandInfoScreen = ({ route, navigation }) => {
       <ScrollView
         style={{ zIndex: 2, marginTop: 0 }}
         showsVerticalScrollIndicator={false}>
-        <View style={{width:WIDTH, height:HEIGHT-150}}></View>
+        <View style={{width:WIDTH, height:HEIGHT-170}}></View>
         <DataTable style={styles.mylandinfo_table}>
           <DataTable.Header style={styles.mylandinfo_table_header}>
-            <DataTable.Title>Mahsul Adı</DataTable.Title>
-            <DataTable.Title>Ekilen m2</DataTable.Title>
+            <DataTable.Title textStyle={{color:'#FFF'}}>Mahsul Adı</DataTable.Title>
+            <DataTable.Title textStyle={{color:'#FFF'}}>Ekilen m2</DataTable.Title>
           </DataTable.Header>
-          
+
           <FlatList
           data={data}
           keyExtractor={(item) => item.id}
@@ -65,12 +73,12 @@ const MyLandInfoScreen = ({ route, navigation }) => {
           )}
         />
         </DataTable>
-        
+
       </ScrollView>
       <View style={styles.mylandinfo_container}>
         <View style={styles.mylandinfo_main_info_container}>
           <Image
-            source={require('./assets/welcome2.jpeg')} //Bunu açılış sayfası yap animasyonlu bir şekilde.
+            source={require('../assets/images/welcome2.jpeg')} //Bunu açılış sayfası yap animasyonlu bir şekilde.
             style={{
               width: 200,
               height: 200,
@@ -99,10 +107,10 @@ const MyLandInfoScreen = ({ route, navigation }) => {
 const Table = ({ product_name, product_planting_area }) => {
   return (
     <DataTable.Row style={styles.mylandinfo_table_row}>
-      <DataTable.Cell textStyle={{ fontSize: 13 }}>
+      <DataTable.Cell textStyle={{ fontSize: 13, color:'#FFF' }}>
         {product_name}
       </DataTable.Cell>
-      <DataTable.Cell textStyle={{ fontSize: 13 }}>
+      <DataTable.Cell textStyle={{ fontSize: 13, color:'#FFF' }}>
         {product_planting_area}
       </DataTable.Cell>
     </DataTable.Row>
@@ -153,14 +161,40 @@ const styles = StyleSheet.create({
   },
 
   mylandinfo_table_header: {
-    backgroundColor: '#FFF',
+    backgroundColor: '#000',
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
+    borderWidth: 1,
+    borderColor: '#FFF'
   },
 
   mylandinfo_table_row: {
-    backgroundColor: '#FFF',
+    backgroundColor: '#000',
     height: HEIGHT / 16,
+    borderWidth: 1,
+    borderColor: '#FFF'
+  },
+
+  mylandinfo_show_button_opacity: {
+    position: 'absolute',
+    zIndex: 7,
+  },
+
+  mylandinfo_show_button: {
+    position: 'absolute',
+    top: 550,
+    left: 260,
+    width: 104,
+    height: 104,
+    borderRadius: 60,
+    backgroundColor: '#FFF',
+  },
+
+  mylandinfo_show_button_text: {
+    color: '#000',
+    fontSize: 20,
+    fontWeight: 'bold',
+    margin: 'auto',
   },
 
   mylandinfo_add_button_opacity: {
@@ -175,11 +209,11 @@ const styles = StyleSheet.create({
     width: 104,
     height: 104,
     borderRadius: 60,
-    backgroundColor: '#000',
+    backgroundColor: '#FFF',
   },
 
   mylandinfo_add_button_text: {
-    color: '#FFF',
+    color: '#000',
     fontSize: 20,
     fontWeight: 'bold',
     margin: 'auto',

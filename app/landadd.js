@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   SafeAreaView,
   Text,
@@ -18,57 +18,129 @@ const HEIGHT = Dimensions.get('screen').height;
 
 const LandAddScreen = ({ navigation, route }) => {
   const [type, setType] = React.useState('');
-  const [city, setCity] = useState('');
-  const [town, setTown] = useState('');
-  const [neighborhood, setNeighborhood] = useState('');
+
+  const [city, setCity] = useState([]);
+  const [town, setTown] = useState([]);
+  const [neighborhood, setNeighborhood] = useState([]);
+
+  const [selectedCity, setSelectedCity] = useState('');
+  const [selectedTown, setSelectedTown] = useState('');
+  const [selectedNeighborhood, setSelectedNeighborhood] = useState('');
+
+  const [selectedCityName, setSelectedCityName] = useState('');
+  const [selectedTownName, setSelectedTownName] = useState('');
+  const [selectedNeighborhoodName, setSelectedNeighborhoodName] = useState('');
+
   const [area, setArea] = useState('');
-  const [userId, setUserId] = useState('');
 
   const dataType = [
     { key: '1', value: 'Tarla', disabled: false },
     { key: '2', value: 'Bağ', disabled: false },
     { key: '3', value: 'Bahçe', disabled: false },
-    { key: '4', value: 'Diğer', disabled: false },
   ];
 
-  const dataCity = [
-    { key: '1', value: 'Ankara', disabled: false },
-    { key: '2', value: 'İstanbul', disabled: false },
-    { key: '3', value: 'İzmir', disabled: false },
-    { key: '4', value: 'Bursa', disabled: false },
-  ];
+  useEffect(() => {
+    axios
+      .get('http://192.168.125.44:8080/api/location/cities')
+      .then((response) => {
+        const cityData = response.data.map((city) => ({
+          key: city.id,
+          value: city.name,
+        }));
+        console.log('City: ', cityData);
+        setCity(cityData);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
 
-  const dataTown = [
-    { key: '1', value: 'Çankaya', disabled: false },
-    { key: '2', value: 'Ulus', disabled: false },
-    { key: '3', value: 'Gölyaka', disabled: false },
-    { key: '4', value: 'Keçiören', disabled: false },
-  ];
+  const handleCitySelect = (cityName) => {
+    const selectedCity = city.find((city) => city.value === cityName);
+    if (selectedCity) {
+      setSelectedCityName(selectedCity.value);
+      setSelectedCity(selectedCity.key);
+    }
+  };
 
-  const dataNeighborhood = [
-    { key: '1', value: 'Söğütözü', disabled: false },
-    { key: '2', value: 'Demetevler', disabled: false },
-    { key: '3', value: 'diğer', disabled: false },
-    { key: '4', value: 'Diğer', disabled: false },
-  ];
+  useEffect(() => {
+    console.log(selectedCity);
+    if (selectedCity) {
+      axios
+        .get(`http://192.168.125.44:8080/api/location/towns/${selectedCity}`)
+        .then((response) => {
+          const townData = response.data.map((town) => ({
+            key: town.id,
+            value: town.name,
+          }));
+          console.log('Town: ', townData);
+          setTown(townData);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  }, [selectedCity]);
+
+  const handleTownSelect = (townName) => {
+    const selectedTown = town.find((town) => town.value === townName);
+    if (selectedTown) {
+      setSelectedTownName(selectedTown.value);
+      setSelectedTown(selectedTown.key);
+    }
+  };
+
+  useEffect(() => {
+    console.log(selectedTown);
+    if (selectedTown) {
+      axios
+        .get(
+          `http://192.168.125.44:8080/api/location/neighborhoods/${selectedTown}`
+        )
+        .then((response) => {
+          const neighborhoodData = response.data.map((neighborhood) => ({
+            key: neighborhood.id,
+            value: neighborhood.name,
+          }));
+          console.log('Neighborhood: ', neighborhoodData);
+          setNeighborhood(neighborhoodData);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  }, [selectedTown]);
+
+  const handleNeighborhoodSelect = (NeighborhoodName) => {
+    const selectedNeighborhood = neighborhood.find((neighborhood) => neighborhood.value === NeighborhoodName);
+    if (selectedNeighborhood) {
+      setSelectedNeighborhoodName(selectedNeighborhood.value);
+      setSelectedNeighborhood(selectedNeighborhood.key);
+    }
+    console.log(selectedCityName);
+    console.log(selectedTownName);
+    console.log(selectedNeighborhood.value);
+    console.log(selectedNeighborhood.key);
+  };
 
   const handleAdding = async () => {
     try {
       const token = await AsyncStorage.getItem('userToken');
       const userId = await AsyncStorage.getItem('userId');
       const response = await axios.post(
-        'http://192.168.125.44:8080/api/lands/adding',  
+        'http://192.168.125.44:8080/api/lands/adding',
         {
           landName: type,
-          city: city,
-          town: town,
-          neighborhood: neighborhood,
+          city: selectedCityName,
+          town: selectedTownName,
+          neighborhood: selectedNeighborhoodName,
           area: parseInt(area, 10),
+          neighborhoodId: selectedNeighborhood,
           userId: userId,
         }
       );
       Alert.alert('Başarılı', 'Kayıt Başarılı');
-      navigation.navigate('MyLandScreen');
+      navigation.navigate('MyLand');
     } catch (error) {
       Alert.alert('Hata', 'Giriş Hatalı');
       console.error(error);
@@ -118,8 +190,8 @@ const LandAddScreen = ({ navigation, route }) => {
         dropdownStyles={styles.landAdd_select_list_drop}
         dropdownItemStyles={styles.landAdd_select_list_items}
         dropdownTextStyles={styles.landAdd_select_list_item_text}
-        setSelected={(val) => setCity(val)}
-        data={dataCity}
+        setSelected={handleCitySelect}
+        data={city}
         save="value"
       />
 
@@ -141,8 +213,8 @@ const LandAddScreen = ({ navigation, route }) => {
         dropdownStyles={styles.landAdd_select_list_drop}
         dropdownItemStyles={styles.landAdd_select_list_items}
         dropdownTextStyles={styles.landAdd_select_list_item_text}
-        setSelected={(val) => setTown(val)}
-        data={dataTown}
+        setSelected={handleTownSelect}
+        data={town}
         save="value"
       />
 
@@ -164,8 +236,8 @@ const LandAddScreen = ({ navigation, route }) => {
         dropdownStyles={styles.landAdd_select_list_drop}
         dropdownItemStyles={styles.landAdd_select_list_items}
         dropdownTextStyles={styles.landAdd_select_list_item_text}
-        setSelected={(val) => setNeighborhood(val)}
-        data={dataNeighborhood}
+        setSelected={handleNeighborhoodSelect}
+        data={neighborhood}
         save="value"
       />
       <Text
@@ -188,10 +260,11 @@ const LandAddScreen = ({ navigation, route }) => {
         onChangeText={setArea}
         keyboardType="numeric"
       />
+
       <TouchableOpacity
         style={styles.landAdd_submit_button}
         onPress={handleAdding}>
-        <Text style={styles.landAdd_submit_button_text}>Kaydet</Text>
+        <Text style={styles.landAdd_submit_button_text}>Ekle</Text>
       </TouchableOpacity>
     </SafeAreaView>
   );
