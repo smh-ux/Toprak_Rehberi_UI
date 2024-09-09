@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
   StyleSheet,
   View,
@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import { DataTable } from 'react-native-paper';
 import axios from 'axios';
+import { AuthContext } from './authprovider';
 
 const WIDTH = Dimensions.get('screen').width;
 const HEIGHT = Dimensions.get('screen').height;
@@ -21,6 +22,17 @@ const SuccessRateScreen = ({ route, navigation }) => {
   const { item } = route.params;
   const periodId = item.id;
   const [data, setData] = useState('');
+  const neighborhoodId = item.neighborhood_id.id;
+
+  console.log("NID: ", item.neighborhood_id.id);
+
+  const authData = useContext(AuthContext);
+
+  // useEffect(() => {
+  //   if (!authData) {
+  //     navigation.navigate('Login');
+  //   }
+  // }, [authData]);
 
   if(!item) {
     console.log('item yok')
@@ -32,7 +44,7 @@ const SuccessRateScreen = ({ route, navigation }) => {
       const fetchData = async () => {
         try {
           const response = await axios.get(
-            `http://192.168.125.44:8080/api/products/fetching`
+            `http://192.168.125.44:8080/api/successrate/byNeighborhood/${neighborhoodId}`
           );
           setData(response.data)
         } catch (e) {
@@ -49,7 +61,6 @@ const SuccessRateScreen = ({ route, navigation }) => {
       <View style={styles.successrate_container}>
           <View style={{ flexDirection: 'column' }}>
             <View style={styles.view1}>
-              <Text style={styles.view1_text1}>Sn. {item.user.username}</Text>
               <Text style={styles.view1_text2}>{item.city} {item.neighborhood} mahallesi {item.town} / {item.city}</Text>
             </View>
             <View style={styles.view2}>
@@ -77,11 +88,11 @@ const SuccessRateScreen = ({ route, navigation }) => {
              renderItem={({ item }) => (
                <Table
                  product_name={item.name}
-                 product_planting_time1={item.period.plant_start}
-                 product_planting_time2={item.period.plant_end}
-                 success_rate={item.successRate.rate}
-                 product_harvest_time1={item.period.harvest_start}
-                 product_harvest_time2={item.period.harvest_end}
+                 product_planting_time1={item.plant_start}
+                 product_planting_time2={item.plant_end}
+                 success_rate={item.averageRate}
+                 product_harvest_time1={item.harvest_start}
+                 product_harvest_time2={item.harvest_end}
                />
             )}
            />
@@ -143,9 +154,9 @@ const styles = StyleSheet.create({
 
   view1: {
     width: WIDTH - 150,
-    height: 120,
+    height: 50,
     marginLeft: 75,
-    marginTop: 5,
+    marginTop: 35,
   },
 
   view1_text1: {

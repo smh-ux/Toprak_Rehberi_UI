@@ -1,4 +1,4 @@
-import React from 'react-native';
+import React, {useContext, useState, useEffect} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -9,11 +9,46 @@ import {
   Image,
   ScrollView,
 } from 'react-native';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const WIDTH = Dimensions.get('screen').width;
 const HEIGHT = Dimensions.get('screen').height;
 
 const ChooseScreen = ({ navigation }) => {
+
+  useEffect (() => {
+    const authChoose = async () => {
+      try{
+        const all = await AsyncStorage.getAllKeys();
+        const value = await AsyncStorage.getItem('userToken');
+        const id = await AsyncStorage.getItem('userId');
+        if (value !== null) {
+          console.log("Value: ", value);
+        } else {
+          console.log("Value undefined");
+        }
+        if (all !== null) {
+          console.log("All: ", all);
+        } else {
+          console.log("All undefined");
+        }
+        if (id !== null) {
+          console.log("ID: ", id);
+        } else {
+          console.log("ID undefined")
+        }
+        if (value == null && id == null) {
+          navigation.navigate('Login');
+        }
+      } catch(e) {
+        console.log(e);
+      }
+    };
+
+    authChoose();
+  }, []);
+
   return(
     <SafeAreaView>
     <View style={styles.container}>

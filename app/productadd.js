@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
   SafeAreaView,
   Text,
@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import { SelectList } from 'react-native-dropdown-select-list';
 import axios from 'axios';
+import { AuthContext } from './authprovider';
 
 const WIDTH = Dimensions.get('screen').width;
 const HEIGHT = Dimensions.get('screen').height;
@@ -22,6 +23,14 @@ const ProductAddScreen = ({ route, navigation }) => {
 
   const [selectedPeriod, setSelectedPeriod] = useState('');
   const [selectedSR, setSelectedSR] = useState('');
+
+  const authData = useContext(AuthContext);
+
+  // useEffect(() => {
+  //   if (!authData) {
+  //     navigation.navigate('Login');
+  //   }
+  // }, [authData]);
 
   const { item } = route.params || {};
 
@@ -88,7 +97,7 @@ const ProductAddScreen = ({ route, navigation }) => {
         }
       );
       Alert.alert('Başarılı', 'Kayıt Başarılı');
-      navigation.navigate('MyLandInfo', {item});
+      navigation.navigate('MyLand');
     } catch (error) {
       Alert.alert('Hata', 'Giriş Hatalı');
       console.error(error);

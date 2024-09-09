@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
   StyleSheet,
   View,
@@ -11,10 +11,7 @@ import {
   FlatList,
 } from 'react-native';
 import axios from 'axios';
-
-import domates from '../assets/images/domates.jpg';
-import biber from '../assets/images/biber.jpg';
-import fasulye from '../assets/images/fasulye.jpg';
+import { AuthContext } from './authprovider';
 
 const WIDTH = Dimensions.get('screen').width;
 const HEIGHT = Dimensions.get('screen').height;

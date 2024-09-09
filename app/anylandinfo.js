@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
   StyleSheet,
   SafeAreaView,
@@ -12,6 +12,7 @@ import {
 import { SelectList } from 'react-native-dropdown-select-list';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { AuthContext } from './authprovider';
 
 const WIDTH = Dimensions.get('screen').width;
 const HEIGHT = Dimensions.get('screen').height;
@@ -26,6 +27,10 @@ const AnyLandInfoScreen = ({ navigation }) => {
   const [selectedCity, setSelectedCity] = useState('');
   const [selectedTown, setSelectedTown] = useState('');
   const [selectedNeighborhood, setSelectedNeighborhood] = useState('');
+
+  const [cityName, setCityName] = useState('');
+  const [townName, setTownName] = useState('');
+  const [neighborhoodName, setNeighborhoodName] = useState('');
 
   const [userId, setUserId] = useState('');
   const [token, setToken] = useState('');
@@ -55,9 +60,18 @@ const AnyLandInfoScreen = ({ navigation }) => {
   const handleCitySelect = (cityName) => {
     const selectedCity = city.find((city) => city.value === cityName);
     if (selectedCity) {
+      setCityName(selectedCity.value);
       setSelectedCity(selectedCity.key);
     }
   };
+
+  const handleNeighborhoodSelect = (neighborhoodName) => {
+    const selectedNeighborhood = neighborhood.find((neighborhood) => neighborhood.value === neighborhoodName);
+    if (selectedNeighborhood) {
+      setNeighborhoodName(selectedNeighborhood.value);
+      setSelectedNeighborhood(selectedNeighborhood.key);
+    }
+  }
 
   useEffect(() => {
     console.log(selectedCity);
@@ -81,6 +95,7 @@ const AnyLandInfoScreen = ({ navigation }) => {
   const handleTownSelect = (townName) => {
     const selectedTown = town.find((town) => town.value === townName);
     if (selectedTown) {
+      setTownName(selectedTown.value);
       setSelectedTown(selectedTown.key);
     }
   };
@@ -115,6 +130,9 @@ const AnyLandInfoScreen = ({ navigation }) => {
         console.log('token: ', token);
         console.log('ID: ', userId);
 
+        setUserId(userId);
+        setToken(token);
+
 
       } catch (error) {
         console.log(error);
@@ -125,7 +143,10 @@ const AnyLandInfoScreen = ({ navigation }) => {
   }, []);
 
   const handleShowing = (item) => {
-    navigation.navigate('SuccessRateInfoOther', { type: type, city: city, town: town, neighborhood: neighborhood });
+    if (!cityName || !type || !townName || !selectedNeighborhood) {
+      Alert.alert('Hata', 'Tüm alanları doldurduğunuzdan emin olun!');
+    }
+    navigation.navigate('SuccessRateInfoOther', { type: type, city: cityName, town: townName, neighborhood: neighborhoodName, neighborhoodId: selectedNeighborhood, userId: userId, token: token });
   };
 
   return (
@@ -217,7 +238,7 @@ const AnyLandInfoScreen = ({ navigation }) => {
         dropdownStyles={styles.landAdd_select_list_drop}
         dropdownItemStyles={styles.landAdd_select_list_items}
         dropdownTextStyles={styles.landAdd_select_list_item_text}
-        setSelected={setSelectedNeighborhood}
+        setSelected={handleNeighborhoodSelect}
         data={neighborhood}
         save="value"
       />

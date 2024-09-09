@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
   SafeAreaView,
   View,
@@ -11,6 +11,7 @@ import {
   Alert,
 } from 'react-native';
 import axios from 'axios';
+import { AuthContext } from './authprovider';
 
 const WIDTH = Dimensions.get('screen').width;
 const HEIGHT = Dimensions.get('screen').height;
@@ -19,6 +20,14 @@ const RegisterScreen = ({ navigation }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [passwordAuth, setPasswordAuth] = useState('');
+
+  const authData = useContext(AuthContext);
+
+  useEffect(() => {
+    if (authData) {
+      navigation.navigate('Choose');
+    }
+  }, [authData]);
 
   const handleRegister = async () => {
     if (password == passwordAuth) {

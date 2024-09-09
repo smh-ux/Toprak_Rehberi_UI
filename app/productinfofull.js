@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
   SafeAreaView,
   View,
@@ -9,6 +9,7 @@ import {
   ScrollView,
 } from 'react-native';
 import axios from 'axios';
+import { AuthContext } from './authprovider';
 
 const WIDTH = Dimensions.get('screen').width;
 const HEIGHT = Dimensions.get('screen').height;
@@ -17,6 +18,14 @@ const ProductInfoFullScreen = ({ route, navigation }) => {
 
   const { item } = route.params;
   const [infoFull, setInfoFull] = useState('');
+
+  const authData = useContext(AuthContext);
+
+  // useEffect(() => {
+  //   if (!authData) {
+  //     navigation.navigate('Login');
+  //   }
+  // }, [authData]);
 
   const getImageSource = (imgPath) => {
     switch (imgPath) {

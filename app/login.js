@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   SafeAreaView,
   View,
@@ -20,30 +20,37 @@ const LoginScreen = ({ navigation }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  const generateToken = async (userId) => {
-    try {
-      const response = await axios.post(
-        `http://192.168.125.44:8080/api/tokens/generate`,
-        null,
-        { params: { userId } }
-      );
-      return response.data.token;
-    } catch (error) {
-      console.error('Token oluşturma hatası:', error);
-    }
-  };
+  useEffect (() => {
+    const authLogin = async () => {
+      try{
+        const all = await AsyncStorage.getAllKeys();
+        const value = await AsyncStorage.getItem('userToken');
+        const id = await AsyncStorage.getItem('userId');
+        if (value !== null) {
+          console.log("Value: ", value);
+        } else {
+          console.log("Value undefined");
+        }
+        if (all !== null) {
+          console.log("All: ", all);
+        } else {
+          console.log("All undefined");
+        }
+        if (id !== null) {
+          console.log("ID: ", id);
+        } else {
+          console.log("ID undefined")
+        }
+        if (value !== null && id !== null) {
+          navigation.navigate('Choose');
+        }
+      } catch(e) {
+        console.log(e);
+      }
+    };
 
-  const validateToken = async (token) => {
-    try {
-      const response = await axios.get(
-        `http://192.168.125.44:8080/api/tokens/validate`,
-        { params: { token } }
-      );
-      return response.data;
-    } catch (error) {
-      console.error('Token doğrulama hatası:', error);
-    }
-  };
+    authLogin();
+  }, []);
 
   const handleLogin = async () => {
     try {
@@ -51,12 +58,22 @@ const LoginScreen = ({ navigation }) => {
         'http://192.168.125.44:8080/api/users/login',
         { username, password }
       );
+
       console.log('API yanıtı:', response.data);
 
       const { token, userId } = response.data;
 
       console.log('Token:', token);
-      console.log('User ID:', userId);
+      console.log('User ID:', userId)
+
+      const tokenn = async () => {
+        try {
+          const value = await AsyncStorage("userToken");
+          console.log(value);
+        } catch(e) {
+          console.log(e);
+        }
+      }
 
       if (!token || !userId) {
         throw new Error("Token veya kullanıcı ID'si alınamadı");
@@ -68,30 +85,6 @@ const LoginScreen = ({ navigation }) => {
     } catch (error) {
       Alert.alert('Hata', 'Giriş Hatalı');
       console.error('Giriş hatası:', error);
-    }
-  };
-
-  const checkTokenValidity = async () => {
-    try {
-      const token = await AsyncStorage.getItem('userToken');
-      const userId = await AsyncStorage.getItem('userId');
-      console.log('Stored Token:', token);
-      console.log('Stored User ID:', userId);
-
-      if (token) {
-        const isValid = await validateToken(token);
-        if (isValid) {
-          console.log('Token geçerli.');
-        } else {
-          console.log('Token geçersiz.');
-          navigation.navigate('Login');
-        }
-      } else {
-        console.log('Token bulunamadı.');
-        navigation.navigate('Login');
-      }
-    } catch (error) {
-      console.error('Token doğrulama hatası:', error);
     }
   };
 

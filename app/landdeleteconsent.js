@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
   StyleSheet,
   View,
@@ -9,9 +9,11 @@ import {
   TouchableOpacity,
   SafeAreaView,
   FlatList,
+  Alert,
 } from 'react-native';
 import { DataTable } from 'react-native-paper';
 import axios from 'axios';
+import { AuthContext } from './authprovider';
 
 const WIDTH = Dimensions.get('screen').width;
 const HEIGHT = Dimensions.get('screen').height;
@@ -21,6 +23,8 @@ const LandDeleteConsentScreen = ({ route, navigation }) => {
   const [data, setData] = useState([]);
   const landId = item.id;
 
+  console.log("Item: ", item);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -28,6 +32,7 @@ const LandDeleteConsentScreen = ({ route, navigation }) => {
           `http://192.168.125.44:8080/api/products/land/${landId}`
         );
         setData(response.data);
+        console.log("Land: ", response.data);
       } catch (error) {
         console.log(error);
       }
@@ -36,12 +41,36 @@ const LandDeleteConsentScreen = ({ route, navigation }) => {
     fetchData();
   }, [landId]);
 
+  console.log("land id: ",landId);
+
+  const deleteLand = async (landId) => {
+    try {
+      const response = await axios.delete(`http://192.168.125.44:8080/api/lands/delete/${landId}`);
+      if (response.status === 200) {
+        console.log('Arazi başarıyla silindi.');
+        Alert.alert('Başarılı', 'Arazi Başarıyla Silindi');
+        navigate.navigation('Choose');
+      } else if (response.status === 404) {
+        console.log('Arazi bulunamadı.');
+      }
+    } catch (error) {
+      if (error.response && error.response.status === 404) {
+        console.log('Arazi bulunamadı.');
+      } else {
+        console.error('İstek sırasında bir hata oluştu:', error);
+      }
+    }
+  };
+
   return (
     <SafeAreaView>
       <ScrollView
         style={{ zIndex: 2, marginTop: 0 }}
         showsVerticalScrollIndicator={false}>
-        <View style={{width:WIDTH, height:HEIGHT-170}}></View>
+        <View style={{width:WIDTH, height:HEIGHT-290}}></View>
+        <TouchableOpacity style={styles.delete_button} onPress={() => deleteLand(landId)}>
+          <Text style={styles.delete_button_text}>Arazinizi Silmek İçin Dokunun</Text>
+        </TouchableOpacity>
         <DataTable style={styles.mylandinfo_table}>
           <DataTable.Header style={styles.mylandinfo_table_header}>
             <DataTable.Title textStyle={{color:'#FFF'}}>Mahsul Adı</DataTable.Title>
@@ -82,9 +111,6 @@ const LandDeleteConsentScreen = ({ route, navigation }) => {
           </Text>
           <Text style={styles.mylandinfo_second_text}>Alan: {item.area}m2</Text>
         </View>
-        <TouchableOpacity style={styles.delete_button}>
-          <Text style={styles.delete_button_text}>Arazinizi Silmek İçin Dokunun</Text>
-        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
@@ -167,7 +193,8 @@ const styles = StyleSheet.create({
     height: 70,
     marginLeft: 20,
     borderRadius: 50,
-    marginTop: 40
+    marginTop: 0,
+    marginBottom: 40,
   },
 
   delete_button_text: {

@@ -17,36 +17,51 @@ const WIDTH = Dimensions.get('screen').width;
 const HEIGHT = Dimensions.get('screen').height;
 
 const FeedBackScreen = ({ route, navigation }) => {
-  const name = 'Semih Okumuş';
-  const date = '03.01.2024';
-
   const { item } = route.params;
   const [data, setData] = useState([]);
   const [evaluations, setEvaluations] = useState({});
   const landId = item.id;
+  const [check, setCheck] = useState([]);
+  const neighborhoodId = item.neighborhood_id.id;
+
+  console.log('Evaluations: ', evaluations);
+
+  console.log('NeighborhoodID: ', neighborhoodId);
+
+  console.log('Data: ', item);
 
   const handleProductEvaluation = (productName, evaluation) => {
     setEvaluations(prevEvaluations => ({
       ...prevEvaluations,
-      [productName]: evaluation
+      [productName]: evaluation,
     }));
     setData(prevData => prevData.filter(item => item.name !== productName));
   };
 
-  const isAllEvaluated = data.length === 0;
-
   const sendEvaluations = async () => {
     try {
-      await axios.post('http://192.168.125.44:8080/api/products/evaluate', {
-        landId,
-        evaluations
-      });
-      Alert.alert('Başarılı', 'Geribildiriminiz kaydedildi.');
+        // evaluations nesnesini uygun formata dönüştür
+        const evaluationsData = Object.keys(evaluations).reduce((acc, productName) => {
+            acc[productName] = {
+                evaluation: evaluations[productName],
+                neighborhoodId
+            };
+            return acc;
+        }, {});
+
+        await axios.post('http://192.168.125.44:8080/api/successrate/evaluate', {
+            landId,
+            evaluations: evaluationsData,
+            neighborhoodId
+        });
+
+        Alert.alert('Başarılı', 'Geribildiriminiz kaydedildi.');
+        navigation.navigate('SuccessRateInfo', { item });
     } catch (error) {
-      console.log(error);
-      Alert.alert('Hata', 'Bir hata oluştu.');
+        console.log(error);
+        Alert.alert('Hata', 'Bir hata oluştu.');
     }
-  };
+};
 
   useEffect(() => {
     const fetchData = async () => {
@@ -55,6 +70,7 @@ const FeedBackScreen = ({ route, navigation }) => {
           `http://192.168.125.44:8080/api/products/land/${landId}`
         );
         setData(response.data);
+        setCheck(response.data);
       } catch (error) {
         console.log(error);
       }
@@ -67,7 +83,7 @@ const FeedBackScreen = ({ route, navigation }) => {
   return (
     <SafeAreaView style={{backgroundColor:'#000', width:WIDTH, height:HEIGHT}}>
 
-      {data.length === 0 ? (
+      {check.length === 0 ? (
         <View style={{ marginTop: HEIGHT/2.5, marginLeft: 20, width: WIDTH }}>
           <Text style={styles.no_data_text}>
             Geribildirim yapılabilecek ürün bulunamadı.
@@ -76,9 +92,9 @@ const FeedBackScreen = ({ route, navigation }) => {
       ) : (
         <View>
         <View style={styles.view1}>
-          <Text style={styles.view1_text1}>Sn.{name}</Text>
+          <Text style={styles.view1_text1}>Sn. {item.user.username}</Text>
           <Text style={styles.view1_text2}>
-            {date} tarihli ekimini yapmış olduğunuz ürünler için bu anketi doğru
+            Ekimini yapmış olduğunuz ürünler için bu anketi doğru
             şekilde doldurmanız önem arz eder. Ekimini yapmış olduğunuz ürünlerin
             listesi aşağıda yer almaktadır. Buna göre gözlemleriniz nelerdir?
           </Text>
@@ -94,21 +110,15 @@ const FeedBackScreen = ({ route, navigation }) => {
             )}
             scrollEnabled={false}
           />
-          {isAllEvaluated && (
-          <View style={{ marginTop: 20, marginLeft: 20, width: WIDTH }}>
+          <View style={{ marginTop: 20, marginLeft: 20, width: WIDTH, height: HEIGHT }}>
             <TouchableOpacity style={styles.button} onPress={sendEvaluations}>
               <Text style={styles.button_text}>Gönder</Text>
             </TouchableOpacity>
           </View>
-        )}
         </View>
       )}
     </SafeAreaView>
   );
-};
-
-const send = () => {
-  Alert.alert('Başarılı', 'Geribildiriminiz için teşekkürler.');
 };
 
 const RadioButtons = ({ product_name, onEvaluate }) => {
@@ -196,7 +206,7 @@ const styles = StyleSheet.create({
     height: 50,
     backgroundColor: '#FFF',
     marginLeft: WIDTH / 2 - 60,
-    marginTop: 10,
+    marginTop: HEIGHT / 2 - 280,
     borderRadius: 20,
   },
 

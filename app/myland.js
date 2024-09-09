@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -11,6 +11,7 @@ import {
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LogBox } from 'react-native';
+import { AuthContext } from './authprovider';
 
 LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
 
@@ -27,14 +28,9 @@ const MyLandScreen = ({ navigation }) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        const token = await AsyncStorage.getItem('userToken');
-        const userId = await AsyncStorage.getItem('userId');
-
-        console.log('token: ', token);
-        console.log('ID: ', userId);
-
-        if (token && userId) {
+        try {
+          const token = await AsyncStorage.getItem('userToken');
+          const userId = await AsyncStorage.getItem('userId');
           const response = await axios.get(
             `http://192.168.125.44:8080/api/lands/user/${userId}`,
             {
@@ -42,16 +38,13 @@ const MyLandScreen = ({ navigation }) => {
             }
           );
           setData(response.data);
-        } else {
-          console.log("Token veya kullanıcı ID'si bulunamadı.");
+        } catch (error) {
+          console.log(error);
         }
-      } catch (error) {
-        console.log(error);
-      }
     };
 
     fetchData();
-  }, []);
+  });
 
   return (
     <SafeAreaView style={styles.myland_container}>

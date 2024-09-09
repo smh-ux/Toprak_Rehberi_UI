@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { AuthContext } from './authprovider';
 
 const WIDTH = Dimensions.get('screen').width;
 const HEIGHT = Dimensions.get('screen').height;
@@ -50,6 +51,8 @@ const LandDeleteScreen = ({ navigation }) => {
 
     }, []);
 
+    console.log("Data: ", data);
+
   return(
     <SafeAreaView style={styles.myland_container}>
       <View style={styles.mylands}>
@@ -58,26 +61,6 @@ const LandDeleteScreen = ({ navigation }) => {
           <Text style={styles.no_data_text}>
             Silinebilecek arazi bulunamadı.
           </Text>
-          <TouchableOpacity
-            style={{
-              backgroundColor: '#FFF',
-              width: WIDTH - 120,
-              height: 60,
-              marginLeft: 60,
-              marginTop: 150,
-              borderRadius: 50,
-            }}
-            onPress={() => navigation.navigate('LandAdd')}>
-            <Text
-              style={{
-                color: '#000',
-                fontWeight: 'bold',
-                fontSize: 20,
-                margin: 'auto',
-              }}>
-              Hemen Bir Tane Ekleyin
-            </Text>
-          </TouchableOpacity>
         </View>
       ) : (
         <View>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
   StyleSheet,
   View,
@@ -7,10 +7,13 @@ import {
   ScrollView,
   Text,
   TouchableOpacity,
-  FlatList
+  FlatList,
+  ActivityIndicator,
+  Alert
 } from 'react-native';
 import { DataTable } from 'react-native-paper';
 import axios from 'axios';
+import { AuthContext } from './authprovider';
 
 const WIDTH = Dimensions.get('screen').width;
 const HEIGHT = Dimensions.get('screen').height;
@@ -21,36 +24,50 @@ const address = 'Ankara Demetevler mahallesi Çankaya/Ankara';
 const land_no = 2;
 
 const SuccessRateInfoOtherScreen = ({ route, navigation }) => {
-  const [data, setData]  = useState('');
+  const [landData, setLandData] = useState('');
+  const [productData, setProductData] = useState('');
+  const [loading, setLoading] = useState(true);
 
-  const { type, city, town, neighborhood } = route.params;
-
-  console.log("Type: ", type);
-  console.log("City: ", city);
-  console.log("Town: ", town);
-  console.log("Neighborhood: ", neighborhood);
+  const { type, city, town, neighborhood, neighborhoodId, userId, token } = route.params
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchLandData = async () => {
       try {
+        console.log("UserID: ", userId);
         const response = await axios.get(
-          `http://192.168.125.44:8080/api/products/fetching`
+          `http://192.168.125.44:8080/api/lands/user/${userId}`
         );
-        setData(response.data)
+        console.log("UserID: ", userId);
+        console.log("Land: ", response.data);
+        setLandData(response.data);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchLandData();
+  }, [userId]);
+
+  useEffect(() => {
+    const fetchProductData = async () => {
+      try {
+        const response = await axios.get(`http://192.168.125.44:8080/api/successrate/byNeighborhood/${neighborhoodId}`);
+        setProductData(response.data);
+        console.log("SR: ", response.data);
       } catch (e) {
         console.log(e);
       }
     };
-    fetchData();
-  });
+    fetchProductData();
+  }, [neighborhoodId]);
 
   return (
     <SafeAreaView>
       <View style={styles.successrate_container}>
         <View style={{ flexDirection: 'column' }}>
           <View style={styles.view1}>
-            <Text style={styles.view1_text1}>Sn.{item.user.username}</Text>
-            <Text style={styles.view1_text2}>{item.city} {item.neighborhood} mahallesi {item.town}/{item.city}</Text>
+            <Text style={styles.view1_text2}>{city} {neighborhood} mahallesi {town}/{city}</Text>
           </View>
           <View style={styles.view2}>
             <Text style={styles.view2_text1}>Arazi no: {land_no}</Text>
@@ -72,16 +89,16 @@ const SuccessRateInfoOtherScreen = ({ route, navigation }) => {
             <DataTable.Title textStyle={{color:'#FFF'}}>Hasat Dönemi</DataTable.Title>
           </DataTable.Header>
           <FlatList
-          data={data}
+          data={productData}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
             <Table
               product_name={item.name}
-              product_plant_time1={item.period.plant_start}
-              product_plant_time2={item.period.plant_end}
-              success_rate={item.successRate.rate}
-              product_harvest_time1={item.period.harvest_start}
-              product_harvest_time2={item.period.harvest_end}
+              product_plant_time1={item.plant_start}
+              product_plant_time2={item.plant_end}
+              success_rate={item.averageRate}
+              product_harvest_time1={item.harvest_start}
+              product_harvest_time2={item.harvest_end}
             />
           )}
           />
@@ -128,9 +145,9 @@ const styles = StyleSheet.create({
 
   view1: {
     width: WIDTH - 150,
-    height: 120,
+    height: 50,
     marginLeft: 75,
-    marginTop: 55,
+    marginTop: 25,
   },
 
   view1_text1: {
@@ -179,7 +196,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 30,
     width: WIDTH-40,
-    height: 220,
+    height: 420,
     marginTop: 25,
     marginLeft: 20
   },

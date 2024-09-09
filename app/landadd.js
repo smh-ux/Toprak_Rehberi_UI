@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
   SafeAreaView,
   Text,
@@ -12,6 +12,7 @@ import {
 import { SelectList } from 'react-native-dropdown-select-list';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { AuthContext } from './authprovider';
 
 const WIDTH = Dimensions.get('screen').width;
 const HEIGHT = Dimensions.get('screen').height;
@@ -32,6 +33,14 @@ const LandAddScreen = ({ navigation, route }) => {
   const [selectedNeighborhoodName, setSelectedNeighborhoodName] = useState('');
 
   const [area, setArea] = useState('');
+
+  const authData = useContext(AuthContext);
+
+  // useEffect(() => {
+  //   if (!authData) {
+  //     navigation.navigate('Login');
+  //   }
+  // }, [authData]);
 
   const dataType = [
     { key: '1', value: 'Tarla', disabled: false },
