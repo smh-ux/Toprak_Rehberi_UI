@@ -29,26 +29,45 @@ const RegisterScreen = ({ navigation }) => {
     }
   }, [authData]);
 
+  const validateString = (str) => {
+  const hasNumber = /\d/.test(str);
+  const hasLetter = /[a-zA-Z]/.test(str);
+  const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(str);
+
+  if (hasNumber && hasLetter && hasSpecialChar) {
+    return true;
+  }
+  return false;
+};
+
   const handleRegister = async () => {
-    if (password == passwordAuth) {
-      try {
-        const response = await axios.post(
-          'http://192.168.125.44:8080/api/users/register',
-          {
-            username,
-            password,
+    if (password.length > 5) {
+      if (validateString(password)) {
+        if (password == passwordAuth) {
+          try {
+            const response = await axios.post(
+              'http://192.168.125.44:8080/api/users/register',
+              {
+                username,
+                password,
+              }
+            );
+            Alert.alert('Başarılı', 'Kayıt Başarılı');
+            navigation.navigate('Login');
+          } catch (error) {
+            Alert.alert('Hata', 'Giriş Hatalı');
+            console.error(error);
           }
-        );
-        Alert.alert('Başarılı', 'Kayıt Başarılı');
-        navigation.navigate('Login');
-      } catch (error) {
-        Alert.alert('Hata', 'Giriş Hatalı');
-        console.error(error);
+        } else {
+          Alert.alert('Hata', 'Şifreler birbiriyle uymuyor');
+        }
+      } else {
+        Alert.alert('Hata', 'Şifreniz harf, sayı ve özel karakter içermelidir');
       }
     } else {
-      Alert.alert('Hata', 'Şifreler birbiriyle uymuyor');
+      Alert.alert('Hata', 'Şifrenizin uzunluğu 6 karakterden az olamaz');
     }
-  };
+  }
 
   return (
     <SafeAreaView>

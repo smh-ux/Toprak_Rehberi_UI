@@ -11,7 +11,6 @@ import {
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LogBox } from 'react-native';
-import { AuthContext } from './authprovider';
 
 LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
 

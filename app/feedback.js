@@ -20,8 +20,8 @@ const FeedBackScreen = ({ route, navigation }) => {
   const { item } = route.params;
   const [data, setData] = useState([]);
   const [evaluations, setEvaluations] = useState({});
-  const landId = item.id;
   const [check, setCheck] = useState([]);
+  const landId = item.id;
   const neighborhoodId = item.neighborhood_id.id;
 
   console.log('Evaluations: ', evaluations);
@@ -40,7 +40,7 @@ const FeedBackScreen = ({ route, navigation }) => {
 
   const sendEvaluations = async () => {
     try {
-        // evaluations nesnesini uygun formata dönüştür
+        // evaluations nesnesini uygun formata dönüştürdüm.
         const evaluationsData = Object.keys(evaluations).reduce((acc, productName) => {
             acc[productName] = {
                 evaluation: evaluations[productName],

@@ -59,6 +59,7 @@ const ChooseScreen = ({ navigation }) => {
             source={require('../assets/images/planting.jpg')}
             style={styles.image}
           />
+          <Text style={styles.image_text}>Ekim Yap</Text>
         </View>
       </TouchableOpacity>
       <TouchableOpacity onPress={() => navigation.navigate('MyLandHarvest')}>
@@ -67,6 +68,7 @@ const ChooseScreen = ({ navigation }) => {
           source={require('../assets/images/harvesting.jpg')}
           style={styles.image}
         />
+        <Text style={styles.image_text}>Hasat Et</Text>
         </View>
       </TouchableOpacity>
       <TouchableOpacity onPress={() => navigation.navigate('AnyLandInfo')}>
@@ -75,6 +77,7 @@ const ChooseScreen = ({ navigation }) => {
           source={require('../assets/images/info1.jpg')}
           style={styles.image}
         />
+        <Text style={styles.image_text}>Toprak Rehberi</Text>
         </View>
       </TouchableOpacity>
       <TouchableOpacity onPress={() => navigation.navigate('LandDelete')}>
@@ -83,6 +86,7 @@ const ChooseScreen = ({ navigation }) => {
           source={require('../assets/images/delete_ai.jpeg')}
           style={styles.image}
         />
+        <Text style={styles.image_text}>Arazi Sil</Text>
         </View>
       </TouchableOpacity>
       <TouchableOpacity onPress={() => navigation.navigate('Logout')}>
@@ -91,6 +95,7 @@ const ChooseScreen = ({ navigation }) => {
           source={require('../assets/images/logout_ai.jpeg')}
           style={styles.image}
         />
+        <Text style={styles.image_text}>Çıkış Yap</Text>
         </View>
       </TouchableOpacity>
       <View style={{height:100}}></View>
@@ -121,7 +126,17 @@ const styles = StyleSheet.create({
   image: {
     width: WIDTH-100,
     height: 250,
-    borderRadius: 50
+    borderRadius: 50,
+    opacity: 0.2
+  },
+
+  image_text: {
+    position: 'relative',
+    color: '#ccc',
+    top: -140,
+    fontSize: 25,
+    fontWeight: 'bold',
+    textAlign: 'center'
   }
 });
 
